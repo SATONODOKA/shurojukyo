@@ -4,5 +4,8 @@ const nextConfig = {
   experimental: {
     turbo: false,
   },
+  images: {
+    domains: ['picsum.photos'],
+  },
 }
 export default nextConfig

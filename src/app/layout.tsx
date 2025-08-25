@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from 'next/font/google'
 import { BottomNav } from '@/components/BottomNav'
+import { TopNav } from '@/components/TopNav'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -19,8 +20,12 @@ export default function RootLayout({
   return (
     <html lang="ja" className="dark">
       <body className={`${inter.className} ${noto.className} bg-neutral-950 text-neutral-50 min-h-screen`}>
+        <TopNav />
         <div className="min-h-dvh pb-20">{children}</div>
-        <BottomNav />
+        {/* モバイルのみ下部タブ */}
+        <div className="md:hidden">
+          <BottomNav />
+        </div>
       </body>
     </html>
   );

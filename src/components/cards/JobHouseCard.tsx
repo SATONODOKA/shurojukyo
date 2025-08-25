@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Heart } from 'lucide-react'
@@ -14,7 +15,7 @@ export default function JobHouseCard({ pair }: { pair: Pair }) {
   return (
     <Card className="overflow-hidden bg-neutral-900/70 border-neutral-800">
       <div className="relative">
-        <img src={pair.house.photo} alt={pair.house.name} className="h-40 w-full object-cover" />
+        <Image src={pair.house.photo ?? '/placeholder.png'} alt={pair.house.name} width={800} height={480} className="h-40 w-full object-cover" />
         <button
           onClick={() => toggleSave(pair.id)}
           className={clsx(
