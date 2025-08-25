@@ -11,9 +11,13 @@ type State = {
 export const useAppStore = create<State>((set, get) => ({
   pairs: fixedPairs,
   savedIds: new Set<string>(),
-  toggleSave: (id) => {
+  toggleSave: (id: string) => {
     const next = new Set(get().savedIds)
-    next.has(id) ? next.delete(id) : next.add(id)
+    if (next.has(id)) {
+      next.delete(id)
+    } else {
+      next.add(id)
+    }
     set({ savedIds: next })
   },
 }))
