@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from 'next/font/google'
 import { BottomNav } from '@/components/BottomNav'
 import { TopNav } from '@/components/TopNav'
+import { SITE } from '@/lib/config'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 const noto = Noto_Sans_JP({ subsets: ['latin'], weight: ['400','500','700'] })
 
 export const metadata: Metadata = {
-  title: 'Foreigner Life',
-  description: 'Jobs × Housing for Foreign Residents',
+  title: SITE.title,
+  description: SITE.tagline,
 }
 
 export default function RootLayout({

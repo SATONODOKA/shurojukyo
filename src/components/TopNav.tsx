@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Bell, MessageCircle, User } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { SITE } from '@/lib/config'
 import clsx from 'clsx'
 
 export function TopNav() {
@@ -11,7 +12,7 @@ export function TopNav() {
     <header className="sticky top-0 z-40 border-b border-neutral-800 bg-neutral-950/85 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4">
         <Link href="/" className="font-semibold tracking-wide">
-          Foreigner Life
+          {SITE.title}
         </Link>
         <div className="ml-2 hidden flex-1 md:block">
           <Input placeholder="地域・職種・家賃・タグで検索" className="bg-neutral-900 border-neutral-800" />

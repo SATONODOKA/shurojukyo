@@ -6,16 +6,26 @@ import { Heart } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 import type { Pair } from '@/lib/types'
 import clsx from 'clsx'
+import { useState } from 'react'
 
 export default function JobHouseCard({ pair }: { pair: Pair }) {
   const savedIds = useAppStore(s => s.savedIds)
   const toggleSave = useAppStore(s => s.toggleSave)
   const saved = savedIds.has(pair.id)
+  const [imgSrc, setImgSrc] = useState(pair.house.photo ?? '/fallback-worker.svg')
 
   return (
     <Card className="overflow-hidden bg-neutral-900/70 border-neutral-800">
       <div className="relative">
-        <Image src={pair.house.photo ?? '/placeholder.png'} alt={pair.house.name} width={800} height={480} className="h-40 w-full object-cover" />
+        <Image 
+          src={imgSrc} 
+          alt={pair.house.name} 
+          width={800} 
+          height={480} 
+          className="h-40 w-full object-cover" 
+          loading="lazy"
+          onError={() => setImgSrc('/fallback-worker.svg')}
+        />
         <button
           onClick={() => toggleSave(pair.id)}
           className={clsx(
