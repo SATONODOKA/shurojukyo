@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 外国人就労・住居支援サービス
 
-## Getting Started
+外国人労働者向けの就労・住居支援プラットフォーム
 
-First, run the development server:
+## 🌟 概要
+
+外国人労働者が日本で働き・住むための包括的な支援サービスです。
+仕事と住居のペアセットを提供し、渡航直後の不安を解消します。
+
+## ✨ 主要機能
+
+### 🏠 仕事×住居セットのおすすめ
+- 24件の仕事×住居組み合わせを固定データで提供
+- Embla Carouselによるスムーズなカルーセル表示
+- 3秒ごとに自動スクロール（ユーザー操作で停止）
+
+### 🎯 5つの主要画面
+1. **ホーム** - おすすめセットのカルーセル表示
+2. **検索** - Spotify風のジャンルカード検索
+3. **フォロー** - 新着情報タイムライン
+4. **DM** - LINE風チャットUI（雇用主とのやり取り）
+5. **マイページ** - プロフィールと信用スコア
+
+### 🎨 UI/UX特徴
+- **ダークテーマ** - モダンで目に優しいデザイン
+- **エメラルドアクセント** - 信頼性と安心感を表現
+- **モバイルファースト** - スマートフォン最適化
+- **直感的な操作** - ハートボタンで保存機能
+
+## 🛠️ 技術スタック
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **State Management**: Zustand
+- **Carousel**: Embla Carousel + Autoplay
+- **Icons**: Lucide React
+- **Package Manager**: pnpm
+
+## 🚀 ローカル開発
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# 依存関係のインストール
+pnpm install
+
+# 開発サーバーの起動
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🌐 http://localhost:3000 でアクセス可能
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 プロジェクト構造
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── layout.tsx         # 共通レイアウト
+│   ├── page.tsx          # ホーム画面
+│   ├── search/           # 検索画面
+│   ├── follow/           # フォロー画面
+│   ├── dm/              # DM画面
+│   └── me/              # マイページ
+├── components/           # 再利用コンポーネント
+│   ├── ui/              # shadcn/uiコンポーネント
+│   └── cards/           # カードコンポーネント
+└── lib/                 # ユーティリティとデータ
+    ├── store.ts         # Zustandストア
+    ├── fixed-data.ts    # 固定モックデータ
+    └── types.ts         # TypeScript型定義
+```
 
-## Learn More
+## 🎯 ターゲットユーザー
 
-To learn more about Next.js, take a look at the following resources:
+- **外国人労働者** - 日本での就労・住居探しを支援
+- **雇用主** - 外国人労働者の採用・住居提供
+- **不動産会社** - 外国人向け住居の提供
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔄 今後の拡張予定
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **実際のAPI連携** - Recruit ID認証
+- **翻訳機能** - 多言語対応
+- **Push通知** - 新着情報通知
+- **地図機能** - 物件位置情報表示
 
-## Deploy on Vercel
+## 📄 ライセンス
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+MIT License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤝 貢献
+
+IssueやPull Requestをお待ちしています！
+
+---
+
+**外国人就労・住居支援サービス** - 未来の労働力を日本で活躍させるためのプラットフォーム
