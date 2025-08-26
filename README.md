@@ -1,4 +1,4 @@
-# 外国人就労・住居支援サービス
+# Home and Job Japan（外国人就労・住居支援サービス）
 
 外国人労働者向けの就労・住居支援プラットフォーム
 
@@ -35,19 +35,54 @@
 - **State Management**: Zustand
 - **Carousel**: Embla Carousel + Autoplay
 - **Icons**: Lucide React
-- **Package Manager**: pnpm
+- **Package Manager**: npm/pnpm
+- **Deployment**: Netlify対応
 
 ## 🚀 ローカル開発
 
 ```bash
 # 依存関係のインストール
+npm install
+# または
 pnpm install
 
 # 開発サーバーの起動
+npm run dev
+# または
 pnpm dev
+
+# ビルド
+npm run build
+
+# プロダクション実行
+npm start
 ```
 
 🌐 http://localhost:3000 でアクセス可能
+
+## 🚢 Netlifyへのデプロイ
+
+### 自動デプロイ設定
+
+1. GitHubリポジトリをNetlifyに接続
+2. 以下の設定が `netlify.toml` で自動適用されます：
+   - Build command: `npm run build`
+   - Publish directory: `.next`
+   - Node version: 18
+
+### 環境変数（必要に応じて）
+
+Netlify Dashboard > Site Settings > Environment Variables:
+
+```
+NEXT_PUBLIC_SITE_URL=https://yourdomain.netlify.app
+```
+
+### ビルド最適化
+
+- 画像は Unsplash の静的URL使用（APIキー不要）
+- フォールバック画像でエラー時も安定表示
+- キャッシュヘッダー設定済み
 
 ## 📁 プロジェクト構造
 

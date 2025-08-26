@@ -73,5 +73,6 @@ module.exports = {
       },
     },
   },
+  // @ts-expect-error - Next.js handles this correctly
   plugins: [require("tailwindcss-animate")],
 }
