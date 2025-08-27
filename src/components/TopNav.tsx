@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { Input } from '@/components/ui/input'
-import { Bell, MessageCircle, User, Home, Briefcase } from 'lucide-react'
+import { Bell, MessageCircle, User } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { SITE } from '@/lib/config'
 import clsx from 'clsx'
@@ -26,7 +26,7 @@ export function TopNav() {
             rel="noopener noreferrer"
             className="px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap bg-green-600 text-white hover:bg-green-700"
           >
-            <Home className="w-3 h-3" />
+            🏠
             <span className="hidden sm:inline">家のみ探す</span>
             <span className="sm:hidden">家のみ</span>
           </a>
@@ -36,7 +36,7 @@ export function TopNav() {
             rel="noopener noreferrer"
             className="px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap bg-blue-600 text-white hover:bg-blue-700"
           >
-            <Briefcase className="w-3 h-3" />
+            💼
             <span className="hidden sm:inline">仕事のみ探す</span>
             <span className="sm:hidden">仕事のみ</span>
           </a>

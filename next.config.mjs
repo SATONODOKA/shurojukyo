@@ -7,5 +7,24 @@ const nextConfig = {
       { protocol: 'https', hostname: 'source.unsplash.com' },
     ],
   },
+  // Fix webpack chunk loading issues
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
+      }
+    }
+    
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+    }
+    
+    return config
+  },
+  // Optimize chunk loading
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-select'],
+  },
 }
 export default nextConfig
