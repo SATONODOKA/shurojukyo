@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Heart } from 'lucide-react'
+import Link from 'next/link'
 import { useAppStore } from '@/lib/store'
 import type { Pair } from '@/lib/types'
 import clsx from 'clsx'
@@ -12,10 +13,11 @@ export default function JobHouseCard({ pair }: { pair: Pair }) {
   const savedIds = useAppStore(s => s.savedIds)
   const toggleSave = useAppStore(s => s.toggleSave)
   const saved = savedIds.has(pair.id)
-  const [imgSrc, setImgSrc] = useState(pair.house.photo ?? '/fallback-worker.svg')
+  const [imgSrc, setImgSrc] = useState(pair.house.photo ?? '/fallback-worker.jpg')
 
   return (
-    <Card className="overflow-hidden bg-neutral-900/70 border-neutral-800">
+    <Link href={`/pair/${pair.id}`}>
+      <Card className="overflow-hidden bg-neutral-900/70 border-neutral-800 cursor-pointer hover:shadow-lg transition-shadow">
       <div className="relative">
         <Image 
           src={imgSrc} 
@@ -24,14 +26,18 @@ export default function JobHouseCard({ pair }: { pair: Pair }) {
           height={480} 
           className="h-40 w-full object-cover" 
           loading="lazy"
-          onError={() => setImgSrc('/fallback-worker.svg')}
+          onError={() => setImgSrc('/fallback-worker.jpg')}
         />
         <button
-          onClick={() => toggleSave(pair.id)}
+          onClick={(e) => {
+            e.preventDefault()
+            toggleSave(pair.id)
+          }}
           className={clsx(
             'absolute right-3 top-3 inline-flex items-center justify-center rounded-full p-2',
             saved ? 'bg-emerald-500/90 text-black' : 'bg-black/50 text-white'
           )}
+          suppressHydrationWarning
         >
           <Heart className={clsx('h-5 w-5', saved && 'fill-black')} />
         </button>
@@ -44,6 +50,7 @@ export default function JobHouseCard({ pair }: { pair: Pair }) {
           {pair.house.tags.map(t => <Badge key={t} variant="secondary" className="bg-neutral-800">{t}</Badge>)}
         </div>
       </div>
-    </Card>
+      </Card>
+    </Link>
   )
 }
