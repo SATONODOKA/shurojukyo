@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { Pair } from './types'
+import type { Pair, UserProfile } from './types'
 import { fixedPairs } from './fixed-data'
 
 export type JourneyStage = 'individual' | 'pair'
@@ -19,11 +19,22 @@ type State = {
   threads: Thread[]
   creditScore: number
   trainingCompleted: boolean
+  selectedJob: any | null
+  selectedHouse: any | null
+  isSelecting: boolean
+  userProfile: Partial<UserProfile> | null
   toggleSave: (id: string) => void
   setJourneyStage: (stage: JourneyStage) => void
   addThread: (thread: Thread) => void
   setCreditScore: (score: number) => void
   toggleTrainingCompleted: () => void
+  startSelection: () => void
+  selectJob: (job: any, router?: any) => void
+  selectHouse: (house: any, router?: any) => void
+  resetSelection: () => void
+  checkAndNavigateToApplication: (router: any) => void
+  updateUserProfile: (profile: Partial<UserProfile>) => void
+  isProfileComplete: () => boolean
 }
 
 export const useAppStore = create<State>((set, get) => ({
@@ -33,6 +44,20 @@ export const useAppStore = create<State>((set, get) => ({
   threads: [],
   creditScore: 650,
   trainingCompleted: false,
+  selectedJob: null,
+  selectedHouse: null,
+  isSelecting: false,
+  userProfile: {
+    creditScore: {
+      score: 78,
+      maxScore: 100,
+      factors: [
+        '雇用形態：フルタイム（Airワーク経由）',
+        '勤続見込み：2年以上', 
+        'Recruit利用歴：1年'
+      ]
+    }
+  },
   
   toggleSave: (id: string) => {
     const next = new Set(get().savedIds)
@@ -54,5 +79,62 @@ export const useAppStore = create<State>((set, get) => ({
   
   toggleTrainingCompleted: () => set((state) => ({
     trainingCompleted: !state.trainingCompleted
-  }))
+  })),
+
+  startSelection: () => set({ isSelecting: true }),
+
+  selectJob: (job, router) => {
+    set({ selectedJob: job })
+    if (router) {
+      get().checkAndNavigateToApplication(router)
+    }
+  },
+
+  selectHouse: (house, router) => {
+    set({ selectedHouse: house })
+    if (router) {
+      get().checkAndNavigateToApplication(router)
+    }
+  },
+
+  checkAndNavigateToApplication: (router) => {
+    const { selectedJob, selectedHouse, pairs, resetSelection } = get()
+    
+    if (selectedJob && selectedHouse) {
+      // 両方選択されている場合、マッチするペアを探す
+      const matchingPair = pairs.find(p => 
+        p.job.id === selectedJob.id && p.house.id === selectedHouse.id
+      )
+      
+      if (matchingPair) {
+        resetSelection()
+        router.push(`/pair/${matchingPair.id}`)
+      } else {
+        // マッチするペアがない場合は検索画面に戻る
+        resetSelection()
+        router.push('/search')
+      }
+    }
+  },
+
+  resetSelection: () => set({ 
+    selectedJob: null, 
+    selectedHouse: null, 
+    isSelecting: false 
+  }),
+
+  updateUserProfile: (profile) => set((state) => ({
+    userProfile: { ...state.userProfile, ...profile }
+  })),
+
+  isProfileComplete: () => {
+    const profile = get().userProfile
+    if (!profile) return false
+    
+    const requiredFields = [
+      'fullName', 'email', 'phone', 'nationality'
+    ]
+    
+    return requiredFields.every(field => profile[field as keyof UserProfile])
+  }
 }))

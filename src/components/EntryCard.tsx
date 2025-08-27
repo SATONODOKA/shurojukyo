@@ -1,8 +1,9 @@
 'use client'
 
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { ArrowRight, Briefcase, Home } from 'lucide-react'
+import { useAppStore } from '@/lib/store'
 
 interface EntryCardProps {
   type: 'job' | 'home'
@@ -10,12 +11,14 @@ interface EntryCardProps {
 }
 
 export function EntryCard({ type, className = '' }: EntryCardProps) {
+  const router = useRouter()
+  const { startSelection, resetSelection } = useAppStore()
+  
   const config = type === 'job' 
     ? {
         title: '仕事から探す',
         description: '希望の職種・勤務地から探して、住まいも一緒に',
         icon: <Briefcase className="w-8 h-8" />,
-        href: '/search?tab=job',
         bgColor: 'bg-blue-900/20 hover:bg-blue-900/30 border-blue-600/30',
         iconColor: 'text-blue-400',
         textColor: 'text-blue-200'
@@ -24,14 +27,19 @@ export function EntryCard({ type, className = '' }: EntryCardProps) {
         title: '住まいから探す',
         description: 'まず住みたいエリアを決めて、近くの仕事を探す',
         icon: <Home className="w-8 h-8" />,
-        href: '/search?tab=home',
         bgColor: 'bg-green-900/20 hover:bg-green-900/30 border-green-600/30',
         iconColor: 'text-green-400',
         textColor: 'text-green-200'
       }
   
+  const handleClick = () => {
+    resetSelection()
+    startSelection()
+    router.push(`/search?tab=${type}`)
+  }
+  
   return (
-    <Link href={config.href} className={className}>
+    <div onClick={handleClick} className={className}>
       <Card className={`cursor-pointer transition-all hover:shadow-lg ${config.bgColor}`}>
         <CardHeader>
           <div className="flex items-start justify-between">
@@ -50,6 +58,6 @@ export function EntryCard({ type, className = '' }: EntryCardProps) {
           </div>
         </CardContent>
       </Card>
-    </Link>
+    </div>
   )
 }

@@ -1,9 +1,10 @@
 'use client'
 
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { Train } from 'lucide-react'
+import { useAppStore } from '@/lib/store'
 import type { House } from '@/lib/types'
 
 interface HouseCardProps {
@@ -11,9 +12,26 @@ interface HouseCardProps {
 }
 
 export default function HouseCard({ house }: HouseCardProps) {
+  const router = useRouter()
+  const { isSelecting, selectedJob, selectHouse, resetSelection, pairs } = useAppStore()
+
+  const handleClick = () => {
+    if (isSelecting) {
+      selectHouse(house, router)
+      // If no job selected yet, go to job selection
+      if (!selectedJob) {
+        router.push('/search?tab=job')
+      }
+    } else {
+      router.push(`/house/${house.id}`)
+    }
+  }
+
   return (
-    <Link href={`/house/${house.id}`}>
-      <Card className="cursor-pointer transition-all hover:shadow-lg bg-neutral-900/70 border-neutral-800 hover:border-green-600/50">
+    <div onClick={handleClick}>
+      <Card className={`cursor-pointer transition-all hover:shadow-lg bg-neutral-900/70 border-neutral-800 ${
+        isSelecting ? 'hover:border-green-600 border-green-600/30' : 'hover:border-green-600/50'
+      }`}>
         <div className="aspect-[4/3] relative overflow-hidden rounded-t-lg">
           <Image
             src={house.photo || '/fallback-worker.jpg'}
@@ -63,11 +81,11 @@ export default function HouseCard({ house }: HouseCardProps) {
           </div>
           <div className="mt-3 text-right">
             <span className="text-xs sm:text-sm text-green-400 hover:text-green-300 transition-colors">
-              この住まいで仕事を探す →
+              {isSelecting ? 'この住まいを選ぶ' : 'この住まいで仕事を探す'} →
             </span>
           </div>
         </CardContent>
       </Card>
-    </Link>
+    </div>
   )
 }

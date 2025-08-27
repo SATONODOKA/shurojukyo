@@ -37,17 +37,18 @@ interface FormData {
 
 export function BatchApplyDrawer({ isOpen, onClose, pair }: BatchApplyDrawerProps) {
   const router = useRouter()
-  const addThread = useAppStore(s => s.addThread)
+  const { addThread, userProfile, isProfileComplete } = useAppStore()
   const [currentStep, setCurrentStep] = useState(0)
+  const [showProfileIncomplete, setShowProfileIncomplete] = useState(false)
   const [formData, setFormData] = useState<FormData>({
-    fullName: '',
-    email: '',
-    phone: '',
-    nationality: '',
-    currentAddress: '',
-    moveInDate: '',
-    employmentStartDate: '',
-    emergencyContact: '',
+    fullName: userProfile?.fullName || '',
+    email: userProfile?.email || '',
+    phone: userProfile?.phone || '',
+    nationality: userProfile?.nationality || '',
+    currentAddress: userProfile?.currentAddress || '',
+    moveInDate: userProfile?.moveInDate || '',
+    employmentStartDate: userProfile?.availableStartDate || '',
+    emergencyContact: userProfile?.emergencyContact || '',
     message: ''
   })
 
@@ -64,15 +65,15 @@ export function BatchApplyDrawer({ isOpen, onClose, pair }: BatchApplyDrawerProp
   }
 
   const validateStep = () => {
-    if (currentStep === 0) {
-      return formData.fullName && formData.email && formData.phone && formData.nationality
+    if (!isProfileComplete()) {
+      setShowProfileIncomplete(true)
+      return false
     }
     return true
   }
 
   const handleNext = () => {
     if (!validateStep()) {
-      alert('必須項目を入力してください')
       return
     }
 
@@ -162,80 +163,77 @@ export function BatchApplyDrawer({ isOpen, onClose, pair }: BatchApplyDrawerProp
           <Progress value={(currentStep + 1) / steps.length * 100} className="h-2" />
 
           <div className="space-y-4">
-            {currentStep === 0 && (
+            {showProfileIncomplete && (
+              <div className="bg-yellow-900/20 border border-yellow-600/30 rounded-lg p-4 mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <User className="w-5 h-5 text-yellow-400" />
+                  <h3 className="font-semibold text-yellow-200">プロフィールが未完成です</h3>
+                </div>
+                <p className="text-yellow-100 text-sm mb-3">
+                  一括申込にはプロフィールの必須項目を入力してください。
+                </p>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => {
+                      onClose()
+                      router.push('/me')
+                    }}
+                    className="bg-yellow-600 hover:bg-yellow-700"
+                  >
+                    プロフィールを編集
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowProfileIncomplete(false)}
+                    className="border-yellow-600 text-yellow-300"
+                  >
+                    キャンセル
+                  </Button>
+                </div>
+              </div>
+            )}
+            
+            {currentStep === 0 && !showProfileIncomplete && (
               <>
-                <div className="space-y-2">
-                  <Label htmlFor="fullName">氏名 *</Label>
-                  <Input
-                    id="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange('fullName')}
-                    placeholder="山田 太郎"
-                    required
-                  />
+                <div className="bg-green-900/20 border border-green-600/30 rounded-lg p-4">
+                  <h3 className="font-semibold text-green-200 mb-2">プロフィールから自動入力されました</h3>
+                  <div className="space-y-1 text-sm text-green-100">
+                    <p>氏名: {formData.fullName}</p>
+                    <p>メール: {formData.email}</p>
+                    <p>電話: {formData.phone}</p>
+                    <p>国籍: {formData.nationality}</p>
+                    {formData.currentAddress && <p>現住所: {formData.currentAddress}</p>}
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">メールアドレス *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleInputChange('email')}
-                    placeholder="yamada@example.com"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">電話番号 *</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleInputChange('phone')}
-                    placeholder="090-1234-5678"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="nationality">国籍 *</Label>
-                  <Input
-                    id="nationality"
-                    value={formData.nationality}
-                    onChange={handleInputChange('nationality')}
-                    placeholder="日本"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="currentAddress">現住所</Label>
-                  <Input
-                    id="currentAddress"
-                    value={formData.currentAddress}
-                    onChange={handleInputChange('currentAddress')}
-                    placeholder="東京都渋谷区..."
-                  />
+                <div className="text-sm text-neutral-400">
+                  ※ 情報を変更する場合はマイページで編集してください
                 </div>
               </>
             )}
 
-            {currentStep === 1 && (
+            {currentStep === 1 && !showProfileIncomplete && (
               <>
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">物件情報</h3>
-                  <div className="space-y-1 text-sm">
+                <div className="bg-green-900/20 border border-green-600/30 p-4 rounded-lg">
+                  <h3 className="font-semibold mb-2 text-green-200">物件情報</h3>
+                  <div className="space-y-1 text-sm text-green-100">
                     <p>物件名: {pair.house.name}</p>
                     <p>家賃: {pair.house.rent}/月</p>
                     <p>最寄駅: {pair.house.station}</p>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="moveInDate">希望入居日</Label>
-                  <Input
-                    id="moveInDate"
-                    type="date"
-                    value={formData.moveInDate}
-                    onChange={handleInputChange('moveInDate')}
-                  />
+                  <Label htmlFor="moveInDate" className="text-white font-medium">希望入居日 📅</Label>
+                  <div className="relative">
+                    <Input
+                      id="moveInDate"
+                      type="date"
+                      value={formData.moveInDate}
+                      onChange={handleInputChange('moveInDate')}
+                      className="bg-neutral-800 border-neutral-600 text-white focus:border-green-500 cursor-pointer"
+                      placeholder="日付を選択してください"
+                    />
+                  </div>
+                  <p className="text-xs text-neutral-400">※ カレンダーアイコンをクリックして日付を選択</p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="emergencyContact">緊急連絡先</Label>
@@ -243,17 +241,18 @@ export function BatchApplyDrawer({ isOpen, onClose, pair }: BatchApplyDrawerProp
                     id="emergencyContact"
                     value={formData.emergencyContact}
                     onChange={handleInputChange('emergencyContact')}
-                    placeholder="090-9876-5432"
+                    className="bg-neutral-800 border-neutral-600 text-white"
+                    placeholder="プロフィールから自動入力: {userProfile?.emergencyContact || '未設定'}"
                   />
                 </div>
               </>
             )}
 
-            {currentStep === 2 && (
+            {currentStep === 2 && !showProfileIncomplete && (
               <>
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">求人情報</h3>
-                  <div className="space-y-1 text-sm">
+                <div className="bg-blue-900/20 border border-blue-600/30 p-4 rounded-lg">
+                  <h3 className="font-semibold mb-2 text-blue-200">求人情報</h3>
+                  <div className="space-y-1 text-sm text-blue-100">
                     <p>会社名: {pair.job.employer}</p>
                     <p>職種: {pair.job.title}</p>
                     <p>時給: {pair.job.wage}</p>
@@ -261,13 +260,18 @@ export function BatchApplyDrawer({ isOpen, onClose, pair }: BatchApplyDrawerProp
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="employmentStartDate">勤務開始希望日</Label>
-                  <Input
-                    id="employmentStartDate"
-                    type="date"
-                    value={formData.employmentStartDate}
-                    onChange={handleInputChange('employmentStartDate')}
-                  />
+                  <Label htmlFor="employmentStartDate" className="text-white font-medium">勤務開始希望日 📅</Label>
+                  <div className="relative">
+                    <Input
+                      id="employmentStartDate"
+                      type="date"
+                      value={formData.employmentStartDate}
+                      onChange={handleInputChange('employmentStartDate')}
+                      className="bg-neutral-800 border-neutral-600 text-white focus:border-blue-500 cursor-pointer"
+                      placeholder="日付を選択してください"
+                    />
+                  </div>
+                  <p className="text-xs text-neutral-400">※ カレンダーアイコンをクリックして日付を選択</p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="message">メッセージ（任意）</Label>
@@ -275,7 +279,7 @@ export function BatchApplyDrawer({ isOpen, onClose, pair }: BatchApplyDrawerProp
                     id="message"
                     value={formData.message}
                     onChange={handleInputChange('message')}
-                    className="w-full px-3 py-2 border rounded-md"
+                    className="w-full px-3 py-2 bg-neutral-800 border border-neutral-600 text-white placeholder-neutral-400 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     rows={4}
                     placeholder="志望動機や質問などがあればご記入ください"
                   />
@@ -284,20 +288,22 @@ export function BatchApplyDrawer({ isOpen, onClose, pair }: BatchApplyDrawerProp
             )}
           </div>
 
-          <div className="flex justify-between pt-4">
-            <Button 
-              variant="outline" 
-              onClick={currentStep === 0 ? onClose : handleBack}
-            >
-              {currentStep === 0 ? 'キャンセル' : '戻る'}
-            </Button>
-            <Button 
-              className="btn-primary"
-              onClick={handleNext}
-            >
-              {currentStep === 2 ? '送信する' : '次へ'}
-            </Button>
-          </div>
+          {!showProfileIncomplete && (
+            <div className="flex justify-between pt-4">
+              <Button 
+                variant="outline" 
+                onClick={currentStep === 0 ? onClose : handleBack}
+              >
+                {currentStep === 0 ? 'キャンセル' : '戻る'}
+              </Button>
+              <Button 
+                className="btn-primary"
+                onClick={handleNext}
+              >
+                {currentStep === 2 ? '送信する' : '次へ'}
+              </Button>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

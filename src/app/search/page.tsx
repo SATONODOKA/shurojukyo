@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Search, MapPin, Briefcase, SlidersHorizontal } from 'lucide-react'
 import JobHouseCard from '@/components/cards/JobHouseCard'
 import JobCard from '@/components/cards/JobCard'
@@ -19,6 +20,16 @@ function SearchContent() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<TabType>('job')
   const [searchQuery, setSearchQuery] = useState('')
+  const [filters, setFilters] = useState({
+    jobType: '',
+    area: '',
+    minWage: '',
+    maxWage: '',
+    minRent: '',
+    maxRent: '',
+    employmentType: '',
+    japaneseLevel: ''
+  })
   const pairs = useAppStore(s => s.pairs)
   
   // ユニークな仕事と住居を取得
@@ -80,14 +91,80 @@ function SearchContent() {
           <div className="space-y-4">
             {activeTab === 'job' && (
               <div className="space-y-4">
-                <div className="flex gap-2">
-                  <Input 
-                    placeholder="職種・キーワードを入力"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1"
-                    suppressHydrationWarning
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, jobType: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="職種を選択" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="manufacturing">製造業</SelectItem>
+                      <SelectItem value="restaurant">飲食・フード</SelectItem>
+                      <SelectItem value="cleaning">清掃・メンテナンス</SelectItem>
+                      <SelectItem value="warehouse">倉庫・物流</SelectItem>
+                      <SelectItem value="retail">小売・販売</SelectItem>
+                      <SelectItem value="care">介護・福祉</SelectItem>
+                      <SelectItem value="construction">建設・工事</SelectItem>
+                      <SelectItem value="agriculture">農業・漁業</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, area: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="勤務地" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="tokyo">東京都</SelectItem>
+                      <SelectItem value="kanagawa">神奈川県</SelectItem>
+                      <SelectItem value="osaka">大阪府</SelectItem>
+                      <SelectItem value="aichi">愛知県</SelectItem>
+                      <SelectItem value="saitama">埼玉県</SelectItem>
+                      <SelectItem value="chiba">千葉県</SelectItem>
+                      <SelectItem value="fukuoka">福岡県</SelectItem>
+                      <SelectItem value="hyogo">兵庫県</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, minWage: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="希望時給" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="900">900円以上</SelectItem>
+                      <SelectItem value="1000">1000円以上</SelectItem>
+                      <SelectItem value="1200">1200円以上</SelectItem>
+                      <SelectItem value="1400">1400円以上</SelectItem>
+                      <SelectItem value="1600">1600円以上</SelectItem>
+                      <SelectItem value="1800">1800円以上</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, employmentType: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="雇用形態" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="fulltime">正社員</SelectItem>
+                      <SelectItem value="parttime">アルバイト・パート</SelectItem>
+                      <SelectItem value="contract">契約社員</SelectItem>
+                      <SelectItem value="temp">派遣</SelectItem>
+                      <SelectItem value="trainee">技能実習</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, japaneseLevel: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="日本語レベル" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">不問</SelectItem>
+                      <SelectItem value="n5">N5（初級）</SelectItem>
+                      <SelectItem value="n4">N4（初中級）</SelectItem>
+                      <SelectItem value="n3">N3（中級）</SelectItem>
+                      <SelectItem value="n2">N2（中上級）</SelectItem>
+                      <SelectItem value="n1">N1（上級）</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
                   <Button className="btn-primary" suppressHydrationWarning>
                     <Search className="w-4 h-4 mr-2" />
                     検索
@@ -101,14 +178,46 @@ function SearchContent() {
 
             {activeTab === 'home' && (
               <div className="space-y-4">
-                <div className="flex gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, area: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="希望エリア" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="tokyo">東京都</SelectItem>
+                      <SelectItem value="kanagawa">神奈川県</SelectItem>
+                      <SelectItem value="osaka">大阪府</SelectItem>
+                      <SelectItem value="aichi">愛知県</SelectItem>
+                      <SelectItem value="saitama">埼玉県</SelectItem>
+                      <SelectItem value="chiba">千葉県</SelectItem>
+                      <SelectItem value="fukuoka">福岡県</SelectItem>
+                      <SelectItem value="hyogo">兵庫県</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, maxRent: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="家賃上限" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="30000">3万円以下</SelectItem>
+                      <SelectItem value="40000">4万円以下</SelectItem>
+                      <SelectItem value="50000">5万円以下</SelectItem>
+                      <SelectItem value="60000">6万円以下</SelectItem>
+                      <SelectItem value="70000">7万円以下</SelectItem>
+                      <SelectItem value="80000">8万円以下</SelectItem>
+                      <SelectItem value="100000">10万円以下</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
                   <Input 
-                    placeholder="エリア・駅名を入力"
+                    placeholder="駅名を入力"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1"
+                    className="bg-neutral-900 border-neutral-700"
                     suppressHydrationWarning
                   />
+                  
                   <Button className="btn-primary" suppressHydrationWarning>
                     <Search className="w-4 h-4 mr-2" />
                     検索
@@ -122,13 +231,97 @@ function SearchContent() {
 
             {activeTab === 'advanced' && (
               <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input placeholder="職種・キーワード" />
-                  <Input placeholder="希望エリア" />
-                  <Input placeholder="希望家賃（下限）" type="number" />
-                  <Input placeholder="希望家賃（上限）" type="number" />
-                  <Input placeholder="希望時給（下限）" type="number" />
-                  <Input placeholder="希望時給（上限）" type="number" />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, jobType: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="職種・キーワード" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="manufacturing">製造業</SelectItem>
+                      <SelectItem value="restaurant">飲食・フード</SelectItem>
+                      <SelectItem value="cleaning">清掃・メンテナンス</SelectItem>
+                      <SelectItem value="warehouse">倉庫・物流</SelectItem>
+                      <SelectItem value="retail">小売・販売</SelectItem>
+                      <SelectItem value="care">介護・福祉</SelectItem>
+                      <SelectItem value="construction">建設・工事</SelectItem>
+                      <SelectItem value="agriculture">農業・漁業</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, area: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="希望エリア" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="tokyo">東京都</SelectItem>
+                      <SelectItem value="kanagawa">神奈川県</SelectItem>
+                      <SelectItem value="osaka">大阪府</SelectItem>
+                      <SelectItem value="aichi">愛知県</SelectItem>
+                      <SelectItem value="saitama">埼玉県</SelectItem>
+                      <SelectItem value="chiba">千葉県</SelectItem>
+                      <SelectItem value="fukuoka">福岡県</SelectItem>
+                      <SelectItem value="hyogo">兵庫県</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, minWage: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="希望時給（下限）" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="900">900円以上</SelectItem>
+                      <SelectItem value="1000">1000円以上</SelectItem>
+                      <SelectItem value="1200">1200円以上</SelectItem>
+                      <SelectItem value="1400">1400円以上</SelectItem>
+                      <SelectItem value="1600">1600円以上</SelectItem>
+                      <SelectItem value="1800">1800円以上</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, maxWage: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="希望時給（上限）" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1000">1000円以下</SelectItem>
+                      <SelectItem value="1200">1200円以下</SelectItem>
+                      <SelectItem value="1400">1400円以下</SelectItem>
+                      <SelectItem value="1600">1600円以下</SelectItem>
+                      <SelectItem value="1800">1800円以下</SelectItem>
+                      <SelectItem value="2000">2000円以下</SelectItem>
+                      <SelectItem value="2500">2500円以下</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, minRent: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="希望家賃（下限）" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="20000">2万円以上</SelectItem>
+                      <SelectItem value="30000">3万円以上</SelectItem>
+                      <SelectItem value="40000">4万円以上</SelectItem>
+                      <SelectItem value="50000">5万円以上</SelectItem>
+                      <SelectItem value="60000">6万円以上</SelectItem>
+                      <SelectItem value="70000">7万円以上</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select onValueChange={(value) => setFilters(prev => ({ ...prev, maxRent: value }))}>
+                    <SelectTrigger className="bg-neutral-900 border-neutral-700">
+                      <SelectValue placeholder="希望家賃（上限）" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="30000">3万円以下</SelectItem>
+                      <SelectItem value="40000">4万円以下</SelectItem>
+                      <SelectItem value="50000">5万円以下</SelectItem>
+                      <SelectItem value="60000">6万円以下</SelectItem>
+                      <SelectItem value="70000">7万円以下</SelectItem>
+                      <SelectItem value="80000">8万円以下</SelectItem>
+                      <SelectItem value="100000">10万円以下</SelectItem>
+                      <SelectItem value="120000">12万円以下</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <Button className="btn-primary w-full" suppressHydrationWarning>
                   <Search className="w-4 h-4 mr-2" />

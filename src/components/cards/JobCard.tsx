@@ -1,8 +1,11 @@
 'use client'
 
-import Link from 'next/link'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { MapPin, Briefcase } from 'lucide-react'
+import { useAppStore } from '@/lib/store'
+import { BatchApplyDrawer } from '@/components/apply/BatchApplyDrawer'
 import type { Job } from '@/lib/types'
 
 interface JobCardProps {
@@ -10,9 +13,26 @@ interface JobCardProps {
 }
 
 export default function JobCard({ job }: JobCardProps) {
+  const router = useRouter()
+  const { isSelecting, selectedHouse, selectJob, resetSelection, pairs } = useAppStore()
+
+  const handleClick = () => {
+    if (isSelecting) {
+      selectJob(job, router)
+      // If no house selected yet, go to house selection
+      if (!selectedHouse) {
+        router.push('/search?tab=home')
+      }
+    } else {
+      router.push(`/job/${job.id}`)
+    }
+  }
+
   return (
-    <Link href={`/job/${job.id}`}>
-      <Card className="cursor-pointer transition-all hover:shadow-lg bg-neutral-900/70 border-neutral-800 hover:border-blue-600/50">
+    <div onClick={handleClick}>
+      <Card className={`cursor-pointer transition-all hover:shadow-lg bg-neutral-900/70 border-neutral-800 ${
+        isSelecting ? 'hover:border-blue-600 border-blue-600/30' : 'hover:border-blue-600/50'
+      }`}>
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0">
@@ -37,11 +57,11 @@ export default function JobCard({ job }: JobCardProps) {
           </div>
           <div className="mt-3 text-right">
             <span className="text-xs sm:text-sm text-blue-400 hover:text-blue-300 transition-colors">
-              この仕事で住まいを探す →
+              {isSelecting ? 'この仕事を選ぶ' : 'この仕事で住まいを探す'} →
             </span>
           </div>
         </CardContent>
       </Card>
-    </Link>
+    </div>
   )
 }
