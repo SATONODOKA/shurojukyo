@@ -24,7 +24,6 @@ type State = {
   isSelecting: boolean
   userProfile: Partial<UserProfile> | null
   toggleSave: (id: string) => void
-  setJourneyStage: (stage: JourneyStage) => void
   addThread: (thread: Thread) => void
   setCreditScore: (score: number) => void
   toggleTrainingCompleted: () => void
@@ -69,7 +68,6 @@ export const useAppStore = create<State>((set, get) => ({
     set({ savedIds: next })
   },
   
-  setJourneyStage: (stage) => set({ journeyStage: stage }),
   
   addThread: (thread) => set((state) => ({
     threads: [...state.threads, thread]

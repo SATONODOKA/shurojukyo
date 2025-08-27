@@ -4,7 +4,6 @@ import { useAppStore } from '@/lib/store'
 import { useEffect, useState } from 'react'
 import type { Pair } from '@/lib/types'
 import { LifePlanPanel } from '@/components/panels/LifePlanPanel'
-import { CommuteMovePanel } from '@/components/panels/CommuteMovePanel'
 import { BatchApplyDrawer } from '@/components/apply/BatchApplyDrawer'
 import { Button } from '@/components/ui/button'
 import { Send } from 'lucide-react'
@@ -13,7 +12,6 @@ import { Send } from 'lucide-react'
 export default function PairDetail({ params }: { params: Promise<{ id: string }> }) {
   const [pair, setPair] = useState<Pair | null>(null)
   const [showDrawer, setShowDrawer] = useState(false)
-  const journeyStage = useAppStore(s => s.journeyStage)
   
   useEffect(() => {
     params.then((resolvedParams) => {
@@ -61,7 +59,7 @@ export default function PairDetail({ params }: { params: Promise<{ id: string }>
       </section>
       
       <aside className="hidden md:block space-y-4">
-        {journeyStage === 'individual' ? <LifePlanPanel /> : <CommuteMovePanel />}
+        <LifePlanPanel />
       </aside>
       
       {showDrawer && (
