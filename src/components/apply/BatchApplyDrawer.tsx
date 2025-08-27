@@ -141,7 +141,7 @@ export function BatchApplyDrawer({ isOpen, onClose, pair }: BatchApplyDrawerProp
                 <div key={step.id} className="flex items-center flex-1">
                   <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
                     index <= currentStep 
-                      ? 'bg-[rgb(var(--primary))] border-[rgb(var(--primary))] text-white'
+                      ? 'bg-green-600 border-green-600 text-white'
                       : 'border-gray-300 text-gray-400'
                   }`}>
                     {index < currentStep ? (
@@ -152,7 +152,7 @@ export function BatchApplyDrawer({ isOpen, onClose, pair }: BatchApplyDrawerProp
                   </div>
                   {index < steps.length - 1 && (
                     <div className={`flex-1 h-1 mx-2 ${
-                      index < currentStep ? 'bg-[rgb(var(--primary))]' : 'bg-gray-200'
+                      index < currentStep ? 'bg-green-600' : 'bg-gray-200'
                     }`} />
                   )}
                 </div>

@@ -76,7 +76,7 @@ function SearchContent() {
                   onClick={() => handleTabChange(tab.id as TabType)}
                   className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                     activeTab === tab.id 
-                      ? 'bg-[rgb(var(--accent))] text-white' 
+                      ? 'bg-blue-600 text-white' 
                       : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300'
                   }`}
                   suppressHydrationWarning

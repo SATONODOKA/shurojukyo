@@ -1,8 +1,16 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { Pair, UserProfile, Job, House } from './types'
 import { fixedPairs } from './fixed-data'
 
 export type JourneyStage = 'individual' | 'pair'
+
+export type Message = {
+  id: string
+  text: string
+  isMe: boolean
+  timestamp: Date
+}
 
 export type Thread = {
   id: string
@@ -10,6 +18,8 @@ export type Thread = {
   title: string
   content: string
   timestamp: Date
+  messages: Message[]
+  lastMessage?: string
 }
 
 type State = {
@@ -24,7 +34,8 @@ type State = {
   isSelecting: boolean
   userProfile: Partial<UserProfile> | null
   toggleSave: (id: string) => void
-  addThread: (thread: Thread) => void
+  addThread: (thread: Omit<Thread, 'messages' | 'lastMessage'>) => void
+  addMessage: (threadId: string, message: Omit<Message, 'id' | 'timestamp'>) => void
   setCreditScore: (score: number) => void
   toggleTrainingCompleted: () => void
   startSelection: () => void
@@ -36,7 +47,9 @@ type State = {
   isProfileComplete: () => boolean
 }
 
-export const useAppStore = create<State>((set, get) => ({
+export const useAppStore = create<State>()(
+  persist(
+    (set, get) => ({
   pairs: fixedPairs,
   savedIds: new Set<string>(),
   journeyStage: 'individual',
@@ -47,6 +60,14 @@ export const useAppStore = create<State>((set, get) => ({
   selectedHouse: null,
   isSelecting: false,
   userProfile: {
+    fullName: '田中太郎',
+    email: 'tanaka@example.com',
+    phone: '090-1234-5678',
+    nationality: 'アメリカ',
+    currentAddress: '東京都新宿区西新宿1-1-1',
+    emergencyContact: '田中花子 (090-8765-4321)',
+    moveInDate: '2024-04-01',
+    availableStartDate: '2024-04-15',
     creditScore: {
       score: 78,
       maxScore: 100,
@@ -69,9 +90,87 @@ export const useAppStore = create<State>((set, get) => ({
   },
   
   
-  addThread: (thread) => set((state) => ({
-    threads: [...state.threads, thread]
-  })),
+  addThread: (thread) => {
+    const threadWithMessages = {
+      ...thread,
+      messages: [{
+        id: '1',
+        text: thread.content,
+        isMe: false,
+        timestamp: thread.timestamp
+      }],
+      lastMessage: thread.content.slice(0, 50) + (thread.content.length > 50 ? '...' : '')
+    }
+    set((state) => ({
+      threads: [...state.threads, threadWithMessages]
+    }))
+  },
+
+  addMessage: (threadId, messageData) => {
+    const newMessage: Message = {
+      ...messageData,
+      id: Date.now().toString(),
+      timestamp: new Date()
+    }
+
+    set((state) => ({
+      threads: state.threads.map(thread => 
+        thread.id === threadId
+          ? {
+              ...thread,
+              messages: [...thread.messages, newMessage],
+              lastMessage: newMessage.text.slice(0, 50) + (newMessage.text.length > 50 ? '...' : '')
+            }
+          : thread
+      )
+    }))
+
+    // 自動応答
+    if (!messageData.isMe) return
+
+    setTimeout(() => {
+      const thread = get().threads.find(t => t.id === threadId)
+      if (!thread) return
+
+      let autoReplyText = ''
+      if (thread.type === 'employer') {
+        const replies = [
+          'お疲れ様です。メッセージありがとうございます。',
+          '承知いたしました。詳細について確認いたします。',
+          '面接の件につきまして、後ほど詳細をお送りします。',
+          'ありがとうございます。人事担当より改めてご連絡いたします。'
+        ]
+        autoReplyText = replies[Math.floor(Math.random() * replies.length)]
+      } else {
+        const replies = [
+          'お疲れ様です。物件の件でご連絡いたします。',
+          'ありがとうございます。確認して回答いたします。',
+          '入居に関する詳細については、改めてお知らせいたします。',
+          '物件管理会社より後日ご連絡させていただきます。'
+        ]
+        autoReplyText = replies[Math.floor(Math.random() * replies.length)]
+      }
+
+      const autoReply: Message = {
+        id: (Date.now() + 1).toString(),
+        text: autoReplyText,
+        isMe: false,
+        timestamp: new Date()
+      }
+
+      set((state) => ({
+        threads: state.threads.map(thread => 
+          thread.id === threadId
+            ? {
+                ...thread,
+                messages: [...thread.messages, autoReply],
+                lastMessage: autoReply.text.slice(0, 50) + (autoReply.text.length > 50 ? '...' : '')
+              }
+            : thread
+        )
+      }))
+    }, 1000 + Math.random() * 2000) // 1-3秒後にランダムで返信
+  },
   
   setCreditScore: (score) => set({ creditScore: score }),
   
@@ -135,4 +234,31 @@ export const useAppStore = create<State>((set, get) => ({
     
     return requiredFields.every(field => profile[field as keyof UserProfile])
   }
-}))
+}),
+    {
+      name: 'foreigner-life-store',
+      storage: {
+        getItem: (key) => {
+          const value = localStorage.getItem(key)
+          if (!value) return null
+          const state = JSON.parse(value)
+          return {
+            ...state.state,
+            savedIds: new Set(state.state.savedIds || [])
+          }
+        },
+        setItem: (key, value) => {
+          const serialized = JSON.stringify({
+            ...value,
+            state: {
+              ...value.state,
+              savedIds: Array.from(value.state.savedIds)
+            }
+          })
+          localStorage.setItem(key, serialized)
+        },
+        removeItem: (key) => localStorage.removeItem(key)
+      }
+    }
+  )
+)

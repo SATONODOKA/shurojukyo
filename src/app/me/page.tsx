@@ -75,6 +75,7 @@ export default function MePage() {
               size="sm"
               onClick={() => setIsEditing(!isEditing)}
               className="border-neutral-600 text-neutral-300"
+              suppressHydrationWarning
             >
               {isEditing ? <X className="w-4 h-4 mr-2" /> : <Edit3 className="w-4 h-4 mr-2" />}
               {isEditing ? 'キャンセル' : '編集'}
@@ -231,6 +232,7 @@ export default function MePage() {
                     size="sm" 
                     onClick={() => addItem('languages', newLanguage, setNewLanguage)}
                     className="bg-blue-600 hover:bg-blue-700"
+                    suppressHydrationWarning
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
@@ -275,6 +277,7 @@ export default function MePage() {
                     size="sm" 
                     onClick={() => addItem('preferredJobTypes', newJobType, setNewJobType)}
                     className="bg-blue-600 hover:bg-blue-700"
+                    suppressHydrationWarning
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
@@ -344,6 +347,7 @@ export default function MePage() {
                     size="sm" 
                     onClick={() => addItem('preferredAreas', newArea, setNewArea)}
                     className="bg-green-600 hover:bg-green-700"
+                    suppressHydrationWarning
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
@@ -467,10 +471,10 @@ export default function MePage() {
       {/* Save/Cancel Buttons */}
       {isEditing && (
         <div className="flex gap-4">
-          <Button onClick={handleCancel} variant="outline" className="flex-1 border-neutral-600 text-neutral-300">
+          <Button onClick={handleCancel} variant="outline" className="flex-1 border-neutral-600 text-neutral-300" suppressHydrationWarning>
             キャンセル
           </Button>
-          <Button onClick={handleSave} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white">
+          <Button onClick={handleSave} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white" suppressHydrationWarning>
             <Save className="w-4 h-4 mr-2" />
             保存
           </Button>

@@ -69,10 +69,10 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-[rgb(var(--primary))] text-white hover:opacity-90 transition-opacity px-4 py-2 rounded-lg font-medium shadow-sm;
+    @apply bg-green-600 text-white hover:bg-green-700 transition-colors px-4 py-2 rounded-lg font-medium shadow-sm;
   }
   .link-accent {
-    @apply text-[rgb(var(--accent))] hover:underline;
+    @apply text-blue-400 hover:underline;
   }
   
   /* Mobile-first responsive text sizing */
