@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Edit3, Save, X, Plus, Trash2, Shield, FileText, CreditCard, User, Briefcase, Home } from 'lucide-react'
+import { Edit3, Save, X, Plus, Shield, FileText, User, Briefcase, Home } from 'lucide-react'
 import type { UserProfile } from '@/lib/types'
 
 export default function MePage() {
@@ -199,7 +199,7 @@ export default function MePage() {
           <div>
             <Label className="text-neutral-300">日本語レベル</Label>
             {isEditing ? (
-              <Select value={editedProfile.japaneseLevel || ''} onValueChange={(value) => setEditedProfile({...editedProfile, japaneseLevel: value as any})}>
+              <Select value={editedProfile.japaneseLevel || ''} onValueChange={(value) => setEditedProfile({...editedProfile, japaneseLevel: value as 'N5' | 'N4' | 'N3' | 'N2' | 'N1'})}>
                 <SelectTrigger className="bg-neutral-800 border-neutral-600 text-white">
                   <SelectValue placeholder="選択してください" />
                 </SelectTrigger>

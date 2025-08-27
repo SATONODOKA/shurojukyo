@@ -2,7 +2,6 @@
 import { useMemo } from 'react'
 import JobHouseCard from '@/components/cards/JobHouseCard'
 import { useAppStore } from '@/lib/store'
-import { RightRail } from '@/components/RightRail'
 import { EntryCard } from '@/components/EntryCard'
 import Link from 'next/link'
 import { Search } from 'lucide-react'

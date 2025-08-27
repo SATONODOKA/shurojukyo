@@ -20,7 +20,7 @@ function SearchContent() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<TabType>('job')
   const [searchQuery, setSearchQuery] = useState('')
-  const [filters, setFilters] = useState({
+  const [, setFilters] = useState({
     jobType: '',
     area: '',
     minWage: '',

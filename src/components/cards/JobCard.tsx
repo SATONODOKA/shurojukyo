@@ -1,11 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { MapPin, Briefcase } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
-import { BatchApplyDrawer } from '@/components/apply/BatchApplyDrawer'
 import type { Job } from '@/lib/types'
 
 interface JobCardProps {
@@ -14,7 +12,7 @@ interface JobCardProps {
 
 export default function JobCard({ job }: JobCardProps) {
   const router = useRouter()
-  const { isSelecting, selectedHouse, selectJob, resetSelection, pairs } = useAppStore()
+  const { isSelecting, selectedHouse, selectJob } = useAppStore()
 
   const handleClick = () => {
     if (isSelecting) {

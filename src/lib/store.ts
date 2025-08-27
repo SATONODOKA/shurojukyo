@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { Pair, UserProfile } from './types'
+import type { Pair, UserProfile, Job, House } from './types'
 import { fixedPairs } from './fixed-data'
 
 export type JourneyStage = 'individual' | 'pair'
@@ -19,8 +19,8 @@ type State = {
   threads: Thread[]
   creditScore: number
   trainingCompleted: boolean
-  selectedJob: any | null
-  selectedHouse: any | null
+  selectedJob: Job | null
+  selectedHouse: House | null
   isSelecting: boolean
   userProfile: Partial<UserProfile> | null
   toggleSave: (id: string) => void
@@ -29,10 +29,10 @@ type State = {
   setCreditScore: (score: number) => void
   toggleTrainingCompleted: () => void
   startSelection: () => void
-  selectJob: (job: any, router?: any) => void
-  selectHouse: (house: any, router?: any) => void
+  selectJob: (job: Job, router?: { push: (path: string) => void }) => void
+  selectHouse: (house: House, router?: { push: (path: string) => void }) => void
   resetSelection: () => void
-  checkAndNavigateToApplication: (router: any) => void
+  checkAndNavigateToApplication: (router: { push: (path: string) => void }) => void
   updateUserProfile: (profile: Partial<UserProfile>) => void
   isProfileComplete: () => boolean
 }
