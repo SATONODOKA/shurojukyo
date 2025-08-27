@@ -1,10 +1,10 @@
 [build]
-  command = "npm run build"
+  command = "npm install --legacy-peer-deps && npm run build"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
-  NPM_FLAGS = "--production=false"
+  NPM_FLAGS = "--legacy-peer-deps --production=false"
   NEXT_TELEMETRY_DISABLED = "1"
 
 [[plugins]]
