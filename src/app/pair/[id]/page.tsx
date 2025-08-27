@@ -9,6 +9,7 @@ import { BatchApplyDrawer } from '@/components/apply/BatchApplyDrawer'
 import { Button } from '@/components/ui/button'
 import { Send } from 'lucide-react'
 
+
 export default function PairDetail({ params }: { params: Promise<{ id: string }> }) {
   const [pair, setPair] = useState<Pair | null>(null)
   const [showDrawer, setShowDrawer] = useState(false)
