@@ -1,15 +1,13 @@
 'use client'
 import Link from 'next/link'
 import { Input } from '@/components/ui/input'
-import { Bell, MessageCircle, User, UserCheck, UserX } from 'lucide-react'
+import { Bell, MessageCircle, User, Home, Briefcase } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { SITE } from '@/lib/config'
-import { useAppStore } from '@/lib/store'
 import clsx from 'clsx'
 
 export function TopNav() {
   const pathname = usePathname()
-  const { journeyStage, setJourneyStage } = useAppStore()
   
   return (
     <header className="sticky top-0 z-40 border-b border-neutral-800 bg-neutral-950/85 backdrop-blur">
@@ -22,34 +20,26 @@ export function TopNav() {
         </div>
         
         <div className="flex items-center gap-1 mr-2">
-          <button
-            onClick={() => setJourneyStage('individual')}
-            className={clsx(
-              'px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap',
-              journeyStage === 'individual' 
-                ? 'bg-green-600 text-white' 
-                : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 hover:text-white'
-            )}
-            suppressHydrationWarning
+          <a
+            href="https://suumo.jp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap bg-green-600 text-white hover:bg-green-700"
           >
-            <UserCheck className="w-3 h-3" />
-            <span className="hidden sm:inline">家・仕事のみ</span>
-            <span className="sm:hidden">個別</span>
-          </button>
-          <button
-            onClick={() => setJourneyStage('pair')}
-            className={clsx(
-              'px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap',
-              journeyStage === 'pair'
-                ? 'bg-blue-600 text-white'
-                : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 hover:text-white'
-            )}
-            suppressHydrationWarning
+            <Home className="w-3 h-3" />
+            <span className="hidden sm:inline">家のみ探す</span>
+            <span className="sm:hidden">家のみ</span>
+          </a>
+          <a
+            href="https://jp.indeed.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap bg-blue-600 text-white hover:bg-blue-700"
           >
-            <UserX className="w-3 h-3" />
-            <span className="hidden sm:inline">セットで探す</span>
-            <span className="sm:hidden">セット</span>
-          </button>
+            <Briefcase className="w-3 h-3" />
+            <span className="hidden sm:inline">仕事のみ探す</span>
+            <span className="sm:hidden">仕事のみ</span>
+          </a>
         </div>
         
         <nav className="ml-auto hidden items-center gap-4 md:flex">
