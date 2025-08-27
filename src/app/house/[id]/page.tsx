@@ -2,17 +2,18 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useAppStore } from '@/lib/store'
 import type { Job, House } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import JobCard from '@/components/cards/JobCard'
 import { RightRail } from '@/components/RightRail'
-import { MapPin, Train, Home, Wifi, Car } from 'lucide-react'
+import { Train } from 'lucide-react'
 
 export default function HouseDetail({ params }: { params: Promise<{ id: string }> }) {
+  const router = useRouter()
   const [house, setHouse] = useState<House | null>(null)
   const [nearbyJobs, setNearbyJobs] = useState<Job[]>([])
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null)
   const pairs = useAppStore(s => s.pairs)
 
   useEffect(() => {
@@ -37,15 +38,24 @@ export default function HouseDetail({ params }: { params: Promise<{ id: string }
 
   const handleJobSelect = (job: Job) => {
     if (!house) return
-    setSelectedJob(job)
     // ペア詳細ページに遷移
     const pair = pairs.find(p => p.house.id === house.id && p.job.id === job.id)
     if (pair) {
-      window.location.href = `/pair/${pair.id}`
+      router.push(`/pair/${pair.id}`)
     }
   }
 
-  if (!house) return <main className="p-6">House Not Found</main>
+  if (!house) {
+    return (
+      <main className="p-6 text-center">
+        <h1 className="text-2xl font-bold text-white mb-4">お探しの住まいが見つかりません</h1>
+        <p className="text-neutral-400 mb-6">指定された住まいは存在しないか、削除された可能性があります。</p>
+        <Button onClick={() => router.push('/search?tab=home')} className="btn-primary">
+          住まい一覧に戻る
+        </Button>
+      </main>
+    )
+  }
 
   return (
     <main className="mx-auto max-w-6xl p-4 md:grid md:grid-cols-[1fr_320px] md:gap-6">

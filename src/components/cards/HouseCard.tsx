@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
-import { MapPin, Train } from 'lucide-react'
+import { Train } from 'lucide-react'
 import type { House } from '@/lib/types'
 
 interface HouseCardProps {

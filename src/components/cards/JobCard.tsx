@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
-import { MapPin, Clock, Briefcase } from 'lucide-react'
+import { MapPin, Briefcase } from 'lucide-react'
 import type { Job } from '@/lib/types'
 
 interface JobCardProps {
