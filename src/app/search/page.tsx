@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Search, MapPin, Briefcase, SlidersHorizontal } from 'lucide-react'
 import JobHouseCard from '@/components/cards/JobHouseCard'
+import JobCard from '@/components/cards/JobCard'
+import HouseCard from '@/components/cards/HouseCard'
 import { useAppStore } from '@/lib/store'
 import { RightRail } from '@/components/RightRail'
 
@@ -18,6 +20,19 @@ function SearchContent() {
   const [activeTab, setActiveTab] = useState<TabType>('job')
   const [searchQuery, setSearchQuery] = useState('')
   const pairs = useAppStore(s => s.pairs)
+  
+  // ユニークな仕事と住居を取得
+  const uniqueJobs = pairs
+    .map(p => p.job)
+    .filter((job, index, self) => 
+      index === self.findIndex(j => j.id === job.id)
+    )
+  
+  const uniqueHouses = pairs
+    .map(p => p.house)
+    .filter((house, index, self) => 
+      index === self.findIndex(h => h.id === house.id)
+    )
 
   useEffect(() => {
     const tab = searchParams.get('tab') as TabType
@@ -125,11 +140,27 @@ function SearchContent() {
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-white">検索結果</h2>
+          <h2 className="text-lg font-semibold text-white">
+            {activeTab === 'job' ? '仕事の検索結果' : 
+             activeTab === 'home' ? '住まいの検索結果' : 
+             'おすすめのセット'}
+          </h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {pairs.slice(0, 9).map(p => (
-              <JobHouseCard key={p.id} pair={p} />
-            ))}
+            {activeTab === 'job' && 
+              uniqueJobs.slice(0, 9).map(job => (
+                <JobCard key={job.id} job={job} />
+              ))
+            }
+            {activeTab === 'home' && 
+              uniqueHouses.slice(0, 9).map(house => (
+                <HouseCard key={house.id} house={house} />
+              ))
+            }
+            {activeTab === 'advanced' && 
+              pairs.slice(0, 9).map(p => (
+                <JobHouseCard key={p.id} pair={p} />
+              ))
+            }
           </div>
         </div>
       </section>
