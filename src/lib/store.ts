@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import type { Pair } from './types'
 import { fixedPairs } from './fixed-data'
 
-export type JourneyStage = 'starter' | 'routine'
+export type JourneyStage = 'individual' | 'pair'
 
 export type Thread = {
   id: string
@@ -29,7 +29,7 @@ type State = {
 export const useAppStore = create<State>((set, get) => ({
   pairs: fixedPairs,
   savedIds: new Set<string>(),
-  journeyStage: 'starter',
+  journeyStage: 'individual',
   threads: [],
   creditScore: 650,
   trainingCompleted: false,

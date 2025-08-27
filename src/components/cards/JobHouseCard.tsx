@@ -17,14 +17,14 @@ export default function JobHouseCard({ pair }: { pair: Pair }) {
 
   return (
     <Link href={`/pair/${pair.id}`}>
-      <Card className="overflow-hidden bg-neutral-900/70 border-neutral-800 cursor-pointer hover:shadow-lg transition-shadow">
+      <Card className="overflow-hidden bg-neutral-900/70 border-neutral-800 cursor-pointer hover:shadow-lg hover:border-neutral-700 transition-all">
       <div className="relative">
         <Image 
           src={imgSrc} 
           alt={pair.house.name} 
           width={800} 
           height={480} 
-          className="h-40 w-full object-cover" 
+          className="h-32 sm:h-40 w-full object-cover" 
           loading="lazy"
           onError={() => setImgSrc('/fallback-worker.jpg')}
         />
@@ -34,20 +34,33 @@ export default function JobHouseCard({ pair }: { pair: Pair }) {
             toggleSave(pair.id)
           }}
           className={clsx(
-            'absolute right-3 top-3 inline-flex items-center justify-center rounded-full p-2',
-            saved ? 'bg-emerald-500/90 text-black' : 'bg-black/50 text-white'
+            'absolute right-2 top-2 inline-flex items-center justify-center rounded-full p-2 transition-colors',
+            saved ? 'bg-emerald-500/95 text-white' : 'bg-black/60 text-white hover:bg-black/75'
           )}
           suppressHydrationWarning
         >
-          <Heart className={clsx('h-5 w-5', saved && 'fill-black')} />
+          <Heart className={clsx('h-4 w-4', saved && 'fill-current')} />
         </button>
       </div>
       <div className="space-y-2 p-3">
-        <div className="text-sm text-neutral-300">{pair.job.location}</div>
-        <div className="text-base font-semibold">{pair.job.title} ・ {pair.house.rent}</div>
-        <div className="text-xs text-neutral-400">{pair.job.employer} / {pair.job.wage} / {pair.house.station}</div>
-        <div className="flex flex-wrap gap-2 pt-1">
-          {pair.house.tags.map(t => <Badge key={t} variant="secondary" className="bg-neutral-800">{t}</Badge>)}
+        <div className="text-xs sm:text-sm text-neutral-400">{pair.job.location}</div>
+        <div className="text-sm sm:text-base font-semibold text-white line-clamp-1">
+          {pair.job.title} ・ <span className="text-green-400">{pair.house.rent}</span>
+        </div>
+        <div className="text-xs text-neutral-300 line-clamp-1">
+          <span className="text-blue-400">{pair.job.employer}</span> / {pair.job.wage} / {pair.house.station}
+        </div>
+        <div className="flex flex-wrap gap-1 pt-1">
+          {pair.house.tags.slice(0, 3).map(t => (
+            <Badge key={t} className="bg-neutral-800 text-neutral-300 text-xs px-2 py-0 hover:bg-neutral-700">
+              {t}
+            </Badge>
+          ))}
+          {pair.house.tags.length > 3 && (
+            <Badge className="bg-neutral-800 text-neutral-400 text-xs px-2 py-0">
+              +{pair.house.tags.length - 3}
+            </Badge>
+          )}
         </div>
       </div>
       </Card>

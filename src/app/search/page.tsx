@@ -53,9 +53,9 @@ function SearchContent() {
   ]
 
   return (
-    <main className="mx-auto max-w-6xl p-4 md:grid md:grid-cols-[1fr_320px] md:gap-6">
-      <section className="space-y-6">
-        <div className="bg-neutral-900/70 border border-neutral-800 rounded-lg p-6 shadow-sm">
+    <main className="mx-auto max-w-6xl p-3 sm:p-4 lg:grid lg:grid-cols-[1fr_320px] lg:gap-6">
+      <section className="space-y-4 sm:space-y-6">
+        <div className="bg-neutral-900/70 border border-neutral-800 rounded-lg p-4 sm:p-6 shadow-sm">
           <div className="flex space-x-1 mb-6">
             {tabs.map(tab => {
               const Icon = tab.icon
@@ -140,12 +140,12 @@ function SearchContent() {
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-white">
+          <h2 className="text-base sm:text-lg font-semibold text-white">
             {activeTab === 'job' ? '仕事の検索結果' : 
              activeTab === 'home' ? '住まいの検索結果' : 
              'おすすめのセット'}
           </h2>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {activeTab === 'job' && 
               uniqueJobs.slice(0, 9).map(job => (
                 <JobCard key={job.id} job={job} />
@@ -165,7 +165,9 @@ function SearchContent() {
         </div>
       </section>
 
-      <RightRail />
+      <div className="hidden lg:block">
+        <RightRail />
+      </div>
     </main>
   )
 }

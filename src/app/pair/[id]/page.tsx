@@ -61,7 +61,7 @@ export default function PairDetail({ params }: { params: Promise<{ id: string }>
       </section>
       
       <aside className="hidden md:block space-y-4">
-        {journeyStage === 'starter' ? <LifePlanPanel /> : <CommuteMovePanel />}
+        {journeyStage === 'individual' ? <LifePlanPanel /> : <CommuteMovePanel />}
       </aside>
       
       {showDrawer && (

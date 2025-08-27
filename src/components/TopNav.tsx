@@ -21,32 +21,34 @@ export function TopNav() {
           <Input placeholder="地域・職種・家賃・タグで検索" className="bg-neutral-900 border-neutral-800" />
         </div>
         
-        <div className="flex items-center gap-2 mr-4">
+        <div className="flex items-center gap-1 mr-2">
           <button
-            onClick={() => setJourneyStage('starter')}
+            onClick={() => setJourneyStage('individual')}
             className={clsx(
-              'px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1',
-              journeyStage === 'starter' 
+              'px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap',
+              journeyStage === 'individual' 
                 ? 'bg-green-600 text-white' 
-                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 hover:text-white'
             )}
             suppressHydrationWarning
           >
             <UserCheck className="w-3 h-3" />
-            はじめて
+            <span className="hidden sm:inline">家・仕事のみ</span>
+            <span className="sm:hidden">個別</span>
           </button>
           <button
-            onClick={() => setJourneyStage('routine')}
+            onClick={() => setJourneyStage('pair')}
             className={clsx(
-              'px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1',
-              journeyStage === 'routine'
+              'px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap',
+              journeyStage === 'pair'
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 hover:text-white'
             )}
             suppressHydrationWarning
           >
             <UserX className="w-3 h-3" />
-            ふつう
+            <span className="hidden sm:inline">セットで探す</span>
+            <span className="sm:hidden">セット</span>
           </button>
         </div>
         

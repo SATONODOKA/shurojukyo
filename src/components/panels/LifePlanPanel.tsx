@@ -29,45 +29,45 @@ export function LifePlanPanel() {
 
   return (
     <div className="space-y-4">
-      <Card>
+      <Card className="bg-neutral-900/70 border-neutral-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <DollarSign className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-2 text-white">
+            <DollarSign className="w-5 h-5 text-green-400" />
             収支バランス
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>月収入</span>
-              <span className="font-semibold text-green-600">¥{monthlyIncome.toLocaleString()}</span>
+              <span className="text-neutral-300">月収入</span>
+              <span className="font-semibold text-green-400">¥{monthlyIncome.toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span>家賃</span>
-              <span className="text-red-600">-¥{rent.toLocaleString()}</span>
+              <span className="text-neutral-300">家賃</span>
+              <span className="text-red-400">-¥{rent.toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span>固定費</span>
-              <span className="text-red-600">-¥{fixedCosts.toLocaleString()}</span>
+              <span className="text-neutral-300">固定費</span>
+              <span className="text-red-400">-¥{fixedCosts.toLocaleString()}</span>
             </div>
-            <div className="border-t pt-2 flex justify-between">
-              <span className="font-semibold">残額</span>
-              <span className={`font-bold ${balance > 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <div className="border-t border-neutral-700 pt-2 flex justify-between">
+              <span className="font-semibold text-white">残額</span>
+              <span className={`font-bold ${balance > 0 ? 'text-green-400' : 'text-red-400'}`}>
                 ¥{balance.toLocaleString()}
               </span>
             </div>
           </div>
-          <Progress value={balancePercent} className="h-2" />
-          <p className="text-xs text-gray-600">
+          <Progress value={balancePercent} className="h-3 bg-neutral-700" />
+          <p className="text-xs text-neutral-400">
             月収の{balancePercent.toFixed(0)}%が自由に使えます
           </p>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-neutral-900/70 border-neutral-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Clock className="w-5 h-5 text-blue-400" />
             1日の時間割
           </CardTitle>
         </CardHeader>
@@ -75,8 +75,8 @@ export function LifePlanPanel() {
           <div className="space-y-2">
             {schedule.map((item, idx) => (
               <div key={idx} className="flex items-center gap-3">
-                <span className="text-xs text-gray-600 w-20">{item.time}</span>
-                <div className={`flex-1 px-2 py-1 rounded text-xs ${item.color}`}>
+                <span className="text-xs text-neutral-400 w-24 flex-shrink-0">{item.time}</span>
+                <div className="flex-1 px-3 py-2 rounded bg-neutral-800 text-white text-xs">
                   {item.activity}
                 </div>
               </div>
@@ -85,31 +85,31 @@ export function LifePlanPanel() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-neutral-900/70 border-neutral-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Shield className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Shield className="w-5 h-5 text-green-400" />
             安心証明
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm">信用スコア</span>
-            <Badge variant="secondary">{creditScore}点</Badge>
+            <span className="text-sm text-neutral-300">信用スコア</span>
+            <Badge className="bg-green-700 text-white hover:bg-green-600">{creditScore}点</Badge>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm">保証会社</span>
+            <span className="text-sm text-neutral-300">保証会社</span>
             <button 
               onClick={() => setSecurityEnabled(!securityEnabled)}
-              className={`text-xs px-2 py-1 rounded ${securityEnabled ? 'bg-green-100 text-green-700' : 'bg-gray-100'}`}
+              className={`text-xs px-3 py-1 rounded font-medium ${securityEnabled ? 'bg-green-600 text-white' : 'bg-neutral-700 text-neutral-300'}`}
             >
               {securityEnabled ? '利用中' : '未利用'}
             </button>
           </div>
           {trainingCompleted && (
             <div className="flex items-center justify-between">
-              <span className="text-sm">研修完了</span>
-              <Award className="w-5 h-5 text-yellow-600" />
+              <span className="text-sm text-neutral-300">研修完了</span>
+              <Award className="w-5 h-5 text-yellow-400" />
             </div>
           )}
         </CardContent>
