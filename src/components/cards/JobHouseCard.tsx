@@ -43,12 +43,12 @@ export default function JobHouseCard({ pair }: { pair: Pair }) {
         </button>
       </div>
       <div className="space-y-2 p-3">
-        <div className="text-xs sm:text-sm text-neutral-400">{pair.job.location}</div>
+        <div className="text-xs sm:text-sm text-neutral-400">{pair.job.location} • 家賃 <span className="text-green-400 font-medium">{pair.house.rent}</span></div>
         <div className="text-sm sm:text-base font-semibold text-white line-clamp-1">
-          {pair.job.title} ・ <span className="text-green-400">{pair.house.rent}</span>
+          {pair.job.title}
         </div>
         <div className="text-xs text-neutral-300 line-clamp-1">
-          <span className="text-blue-400">{pair.job.employer}</span> / {pair.job.wage} / {pair.house.station}
+          <span className="text-blue-400">{pair.job.employer}</span> • <span className="text-blue-300 font-medium">{pair.job.wage}</span> • {pair.house.station}
         </div>
         <div className="flex flex-wrap gap-1 pt-1">
           {pair.house.tags.slice(0, 3).map(t => (

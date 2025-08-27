@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import { Input } from '@/components/ui/input'
 import { Bell, MessageCircle, User } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { SITE } from '@/lib/config'
@@ -15,11 +14,8 @@ export function TopNav() {
         <Link href="/" className="font-semibold tracking-wide">
           {SITE.title}
         </Link>
-        <div className="ml-2 hidden flex-1 md:block">
-          <Input placeholder="地域・職種・家賃・タグで検索" className="bg-neutral-900 border-neutral-800" />
-        </div>
         
-        <div className="flex items-center gap-1 mr-2">
+        <div className="ml-auto flex items-center gap-1 mr-2">
           <a
             href="https://suumo.jp/"
             target="_blank"
@@ -42,7 +38,7 @@ export function TopNav() {
           </a>
         </div>
         
-        <nav className="ml-auto hidden items-center gap-4 md:flex">
+        <nav className="hidden items-center gap-4 md:flex">
           <Link href="/follow" className={clsx('text-neutral-300 hover:text-white', pathname==='/follow' && 'text-emerald-400')}>
             <Bell className="h-5 w-5" />
           </Link>

@@ -1,5 +1,5 @@
 'use client'
-import { useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import JobHouseCard from '@/components/cards/JobHouseCard'
 import { useAppStore } from '@/lib/store'
 import { EntryCard } from '@/components/EntryCard'
@@ -8,8 +8,17 @@ import { Search } from 'lucide-react'
 
 export default function HomePage() {
   const pairs = useAppStore(s => s.pairs)
-  const firstEightPairs = useMemo(() => pairs.slice(0, 8), [pairs])
-  const nextNinePairs = useMemo(() => pairs.slice(8, 17), [pairs])
+  const [randomPairs, setRandomPairs] = useState(pairs.slice(0, 8))
+  const [popularPairs, setPopularPairs] = useState(pairs.slice(8, 11))
+  
+  // クライアントサイドでのみランダム化を実行
+  useEffect(() => {
+    const shuffledForRandom = [...pairs].sort(() => Math.random() - 0.5)
+    const shuffledForPopular = [...pairs].sort(() => Math.random() - 0.5)
+    
+    setRandomPairs(shuffledForRandom.slice(0, 8))
+    setPopularPairs(shuffledForPopular.slice(8, 11))
+  }, [pairs])
 
   return (
     <main className="mx-auto max-w-md p-4">
@@ -23,9 +32,9 @@ export default function HomePage() {
         </div>
         
         <div className="overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/30">
-          <div className="flex gap-2 p-2 overflow-x-auto scrollbar-hide">
-            {firstEightPairs.slice(0, 5).map(p => (
-              <div key={p.id} className="w-[260px] flex-shrink-0">
+          <div className="flex gap-3 p-3 overflow-x-auto scrollbar-hide">
+            {randomPairs.slice(0, 6).map(p => (
+              <div key={p.id} className="w-[280px] flex-shrink-0">
                 <JobHouseCard pair={p} />
               </div>
             ))}
@@ -43,7 +52,7 @@ export default function HomePage() {
         <div>
           <h2 className="text-base font-semibold text-white mb-3">この地域で人気の組み合わせ</h2>
           <div className="space-y-3">
-            {nextNinePairs.slice(0, 3).map(p => (
+            {popularPairs.map(p => (
               <JobHouseCard key={p.id} pair={p} />
             ))}
           </div>

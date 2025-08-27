@@ -20,6 +20,22 @@ const nextConfig = {
       ...config.resolve.fallback,
     }
     
+    // Fix runtime module resolution
+    config.optimization = {
+      ...config.optimization,
+      splitChunks: {
+        ...config.optimization.splitChunks,
+        cacheGroups: {
+          ...config.optimization.splitChunks?.cacheGroups,
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true,
+          },
+        },
+      },
+    }
+    
     return config
   },
   // Optimize chunk loading
