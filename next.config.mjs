@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Netlify deployment optimization
+  output: process.env.NETLIFY ? 'standalone' : undefined,
+  trailingSlash: true,
   images: {
     unoptimized: true,
     remotePatterns: [

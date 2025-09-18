@@ -346,7 +346,7 @@ export default function MePage() {
                   <Button 
                     size="sm" 
                     onClick={() => addItem('preferredAreas', newArea, setNewArea)}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="border border-green-800 bg-green-800/20 text-green-400 hover:bg-green-800/30"
                     suppressHydrationWarning
                   >
                     <Plus className="w-4 h-4" />

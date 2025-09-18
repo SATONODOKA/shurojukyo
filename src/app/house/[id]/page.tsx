@@ -50,7 +50,7 @@ export default function HouseDetail({ params }: { params: Promise<{ id: string }
       <main className="p-6 text-center">
         <h1 className="text-2xl font-bold text-white mb-4">お探しの住まいが見つかりません</h1>
         <p className="text-neutral-400 mb-6">指定された住まいは存在しないか、削除された可能性があります。</p>
-        <Button onClick={() => router.push('/search?tab=home')} className="btn-primary">
+        <Button variant="outline" onClick={() => router.push('/search?tab=home')} className="btn-primary">
           住まい一覧に戻る
         </Button>
       </main>

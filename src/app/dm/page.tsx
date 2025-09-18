@@ -102,8 +102,8 @@ export default function DMPage() {
                       <p className="text-sm text-neutral-300 truncate">{chat.lastMessage}</p>
                     </div>
                     {chat.unread > 0 && (
-                      <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                        <span className="text-xs text-white font-medium">{chat.unread}</span>
+                      <div className="w-5 h-5 border border-green-800 bg-green-800/20 rounded-full flex items-center justify-center">
+                        <span className="text-xs text-green-400 font-medium">{chat.unread}</span>
                       </div>
                     )}
                   </div>
@@ -186,8 +186,8 @@ export default function DMPage() {
                     <p className="text-sm text-neutral-300 truncate">{chat.lastMessage}</p>
                   </div>
                   {chat.unread > 0 && (
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-xs text-white font-medium">{chat.unread}</span>
+                    <div className="w-5 h-5 border border-green-800 bg-green-800/20 rounded-full flex items-center justify-center">
+                      <span className="text-xs text-green-400 font-medium">{chat.unread}</span>
                     </div>
                   )}
                 </div>

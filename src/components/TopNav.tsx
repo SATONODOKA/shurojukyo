@@ -20,7 +20,7 @@ export function TopNav() {
             href="https://suumo.jp/"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap bg-green-600 text-white hover:bg-green-700"
+            className="px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap border border-green-800 bg-green-800/20 text-green-400 hover:bg-green-800/30"
           >
             🏠
             <span className="hidden sm:inline">家のみ探す</span>

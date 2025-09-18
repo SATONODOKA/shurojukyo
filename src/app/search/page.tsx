@@ -165,7 +165,7 @@ function SearchContent() {
                     </SelectContent>
                   </Select>
                   
-                  <Button className="btn-primary" suppressHydrationWarning>
+                  <Button variant="outline" className="btn-primary" suppressHydrationWarning>
                     <Search className="w-4 h-4 mr-2" />
                     検索
                   </Button>
@@ -218,7 +218,7 @@ function SearchContent() {
                     suppressHydrationWarning
                   />
                   
-                  <Button className="btn-primary" suppressHydrationWarning>
+                  <Button variant="outline" className="btn-primary" suppressHydrationWarning>
                     <Search className="w-4 h-4 mr-2" />
                     検索
                   </Button>
@@ -323,7 +323,7 @@ function SearchContent() {
                     </SelectContent>
                   </Select>
                 </div>
-                <Button className="btn-primary w-full" suppressHydrationWarning>
+                <Button variant="outline" className="btn-primary w-full" suppressHydrationWarning>
                   <Search className="w-4 h-4 mr-2" />
                   この条件で検索
                 </Button>

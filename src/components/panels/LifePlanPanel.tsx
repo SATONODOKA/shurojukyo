@@ -95,13 +95,13 @@ export function LifePlanPanel() {
         <CardContent className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm text-neutral-300">信用スコア</span>
-            <Badge className="bg-green-700 text-white hover:bg-green-600">{creditScore}点</Badge>
+            <Badge className="border border-green-800 bg-green-800/20 text-green-400 hover:bg-green-800/30">{creditScore}点</Badge>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-neutral-300">保証会社</span>
             <button 
               onClick={() => setSecurityEnabled(!securityEnabled)}
-              className={`text-xs px-3 py-1 rounded font-medium ${securityEnabled ? 'bg-green-600 text-white' : 'bg-neutral-700 text-neutral-300'}`}
+              className={`text-xs px-3 py-1 rounded font-medium ${securityEnabled ? 'border border-green-800 bg-green-800/20 text-green-400' : 'bg-neutral-700 text-neutral-300'}`}
             >
               {securityEnabled ? '利用中' : '未利用'}
             </button>

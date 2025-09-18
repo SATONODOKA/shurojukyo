@@ -29,6 +29,7 @@ export default function PairDetail({ params }: { params: Promise<{ id: string }>
         
         <div className="bg-neutral-900/70 border border-neutral-800 rounded-lg p-6 shadow-sm">
           <Button 
+            variant="outline"
             onClick={() => setShowDrawer(true)}
             className="btn-primary w-full py-6 text-lg font-semibold"
           >

@@ -239,25 +239,42 @@ export const useAppStore = create<State>()(
       name: 'foreigner-life-store',
       storage: {
         getItem: (key) => {
-          const value = localStorage.getItem(key)
-          if (!value) return null
-          const state = JSON.parse(value)
-          return {
-            ...state.state,
-            savedIds: new Set(state.state.savedIds || [])
+          if (typeof window === 'undefined') return null
+          try {
+            const value = localStorage.getItem(key)
+            if (!value) return null
+            const state = JSON.parse(value)
+            return {
+              ...state.state,
+              savedIds: new Set(state.state.savedIds || [])
+            }
+          } catch {
+            return null
           }
         },
         setItem: (key, value) => {
-          const serialized = JSON.stringify({
-            ...value,
-            state: {
-              ...value.state,
-              savedIds: Array.from(value.state.savedIds)
-            }
-          })
-          localStorage.setItem(key, serialized)
+          if (typeof window === 'undefined') return
+          try {
+            const serialized = JSON.stringify({
+              ...value,
+              state: {
+                ...value.state,
+                savedIds: Array.from(value.state.savedIds)
+              }
+            })
+            localStorage.setItem(key, serialized)
+          } catch {
+            // Silently fail in SSR
+          }
         },
-        removeItem: (key) => localStorage.removeItem(key)
+        removeItem: (key) => {
+          if (typeof window === 'undefined') return
+          try {
+            localStorage.removeItem(key)
+          } catch {
+            // Silently fail in SSR
+          }
+        }
       }
     }
   )
