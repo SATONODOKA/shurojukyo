@@ -18,10 +18,6 @@ export default function HouseCard({ house }: HouseCardProps) {
   const handleClick = () => {
     if (isSelecting) {
       selectHouse(house, router)
-      // If no job selected yet, go to job selection
-      if (!selectedJob) {
-        router.push('/search?tab=job')
-      }
     } else {
       router.push(`/house/${house.id}`)
     }
@@ -53,7 +49,7 @@ export default function HouseCard({ house }: HouseCardProps) {
               <h3 className="font-semibold text-sm sm:text-base text-white mb-1 line-clamp-2">{house.name}</h3>
             </div>
             <div className="text-right flex-shrink-0 ml-2">
-              <p className="font-bold text-lg sm:text-xl text-[rgb(117,192,67)]">{house.rent}</p>
+              <p className="font-bold text-lg sm:text-xl text-primary">{house.rent}</p>
             </div>
           </div>
         </CardHeader>

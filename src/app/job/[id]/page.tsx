@@ -82,7 +82,7 @@ export default function JobDetail({ params }: { params: Promise<{ id: string }> 
             </div>
             <div className="text-right">
               <p className="text-sm text-neutral-400 mb-1">時給</p>
-              <p className="text-3xl font-bold text-[rgb(33,100,243)]">{job.wage}</p>
+              <p className="text-3xl font-bold text-accent">{job.wage}</p>
             </div>
           </div>
           

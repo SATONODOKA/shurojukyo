@@ -17,10 +17,6 @@ export default function JobCard({ job }: JobCardProps) {
   const handleClick = () => {
     if (isSelecting) {
       selectJob(job, router)
-      // If no house selected yet, go to house selection
-      if (!selectedHouse) {
-        router.push('/search?tab=home')
-      }
     } else {
       router.push(`/job/${job.id}`)
     }
@@ -38,7 +34,7 @@ export default function JobCard({ job }: JobCardProps) {
               <p className="text-neutral-400 text-xs sm:text-sm line-clamp-1">{job.employer}</p>
             </div>
             <div className="text-right flex-shrink-0 ml-2">
-              <p className="font-bold text-lg sm:text-xl text-[rgb(33,100,243)]">{job.wage}</p>
+              <p className="font-bold text-lg sm:text-xl text-accent">{job.wage}</p>
             </div>
           </div>
         </CardHeader>

@@ -183,14 +183,28 @@ export const useAppStore = create<State>()(
   selectJob: (job, router) => {
     set({ selectedJob: job })
     if (router) {
-      get().checkAndNavigateToApplication(router)
+      // 状態更新後に現在の選択状態を取得して判定
+      const currentState = get()
+      if (job && currentState.selectedHouse) {
+        get().checkAndNavigateToApplication(router)
+      } else if (job && !currentState.selectedHouse) {
+        // 仕事を選択し、住まいが未選択の場合は住まいタブに遷移
+        router.push('/search?tab=home')
+      }
     }
   },
 
   selectHouse: (house, router) => {
     set({ selectedHouse: house })
     if (router) {
-      get().checkAndNavigateToApplication(router)
+      // 状態更新後に現在の選択状態を取得して判定
+      const currentState = get()
+      if (house && currentState.selectedJob) {
+        get().checkAndNavigateToApplication(router)
+      } else if (house && !currentState.selectedJob) {
+        // 住まいを選択し、仕事が未選択の場合は仕事タブに遷移
+        router.push('/search?tab=job')
+      }
     }
   },
 
