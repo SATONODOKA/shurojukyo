@@ -60,12 +60,12 @@ export const useAppStore = create<State>()(
   selectedHouse: null,
   isSelecting: false,
   userProfile: {
-    fullName: '田中太郎',
-    email: 'tanaka@example.com',
+    fullName: 'グエン・ヴァン・アン',
+    email: 'nguyen.van.an@example.com',
     phone: '090-1234-5678',
-    nationality: 'アメリカ',
+    nationality: 'ベトナム',
     currentAddress: '東京都新宿区西新宿1-1-1',
-    emergencyContact: '田中花子 (090-8765-4321)',
+    emergencyContact: 'グエン・ティ・ハン (090-8765-4321)',
     moveInDate: '2024-04-01',
     availableStartDate: '2024-04-15',
     creditScore: {
