@@ -181,27 +181,43 @@ export const useAppStore = create<State>()(
   startSelection: () => set({ isSelecting: true }),
 
   selectJob: (job, router) => {
-    set({ selectedJob: job })
-    if (router) {
-      // 状態更新後に現在の選択状態を取得して判定
-      const currentState = get()
-      if (job && currentState.selectedHouse) {
-        get().checkAndNavigateToApplication(router)
+    const currentState = get()
+    if (router && job && currentState.selectedHouse) {
+      // 両方選択済みの場合は即座に遷移（状態更新前）
+      const { pairs, resetSelection } = currentState
+      const matchingPair = pairs.find(p => 
+        p.job.id === job.id && p.house.id === currentState.selectedHouse.id
+      )
+      
+      if (matchingPair) {
+        resetSelection()
+        router.push(`/pair/${matchingPair.id}`)
+        return // 早期リターンで状態更新をスキップ
       }
-      // 注意: 検索画面での遷移は useEffect で処理されるため、ここでは遷移しない
     }
+    
+    // 通常の状態更新
+    set({ selectedJob: job })
   },
 
   selectHouse: (house, router) => {
-    set({ selectedHouse: house })
-    if (router) {
-      // 状態更新後に現在の選択状態を取得して判定
-      const currentState = get()
-      if (house && currentState.selectedJob) {
-        get().checkAndNavigateToApplication(router)
+    const currentState = get()
+    if (router && house && currentState.selectedJob) {
+      // 両方選択済みの場合は即座に遷移（状態更新前）
+      const { pairs, resetSelection } = currentState
+      const matchingPair = pairs.find(p => 
+        p.job.id === currentState.selectedJob.id && p.house.id === house.id
+      )
+      
+      if (matchingPair) {
+        resetSelection()
+        router.push(`/pair/${matchingPair.id}`)
+        return // 早期リターンで状態更新をスキップ
       }
-      // 注意: 検索画面での遷移は useEffect で処理されるため、ここでは遷移しない
     }
+    
+    // 通常の状態更新
+    set({ selectedHouse: house })
   },
 
   checkAndNavigateToApplication: (router) => {

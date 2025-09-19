@@ -91,13 +91,13 @@ function SearchContent() {
     }
   }, [searchParams])
 
-  // 仕事が選択された時に住まいタブに自動遷移
+  // 仕事が選択された時に住まいタブに自動遷移（住まい未選択の場合のみ）
   useEffect(() => {
-    if (selectedJob && isSelecting && activeTab === 'job') {
+    if (selectedJob && !selectedHouse && isSelecting && activeTab === 'job') {
       setActiveTab('home')
       router.push('/search?tab=home')
     }
-  }, [selectedJob, isSelecting, activeTab, router])
+  }, [selectedJob, selectedHouse, isSelecting, activeTab, router])
 
   const handleTabChange = (tab: TabType) => {
     setActiveTab(tab)
