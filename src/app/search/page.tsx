@@ -12,6 +12,7 @@ import JobCard from '@/components/cards/JobCard'
 import HouseCard from '@/components/cards/HouseCard'
 import { useAppStore } from '@/lib/store'
 import { RightRail } from '@/components/RightRail'
+import { fixedPairs } from '@/lib/fixed-data'
 
 type TabType = 'job' | 'home' | 'advanced'
 
@@ -20,7 +21,7 @@ function SearchContent() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<TabType>('job')
   const [searchQuery, setSearchQuery] = useState('')
-  const [, setFilters] = useState({
+  const [filters, setFilters] = useState({
     jobType: '',
     area: '',
     minWage: '',
@@ -30,21 +31,58 @@ function SearchContent() {
     employmentType: '',
     japaneseLevel: ''
   })
+  const [hasSearched, setHasSearched] = useState(false)
   const pairs = useAppStore(s => s.pairs)
+  const { isSelecting, selectedJob, selectedHouse, startSelection, resetSelection } = useAppStore()
   
-  // デモ用：介護スタッフの仕事のみを表示
-  const uniqueJobs = pairs
+  // 全ての仕事を取得
+  const allUniqueJobs = pairs
     .map(p => p.job)
     .filter((job, index, self) => 
       index === self.findIndex(j => j.id === job.id)
     )
-    .filter(job => job.position === '介護スタッフ')
   
-  const uniqueHouses = pairs
-    .map(p => p.house)
-    .filter((house, index, self) => 
-      index === self.findIndex(h => h.id === house.id)
-    )
+  // フィルタされた仕事を取得
+  const uniqueJobs = hasSearched && filters.jobType === 'care'
+    ? (() => {
+        // まずfixedPairsから介護スタッフを探す（動作確認済み）
+        const fixedCareJobs = fixedPairs
+          .map(p => p.job)
+          .filter(job => job.title === '介護スタッフ' || job.position === '介護スタッフ')
+          .filter((job, index, self) => 
+            index === self.findIndex(j => j.id === job.id)
+          )
+        
+        // 次に全体から介護スタッフを探す（fixedを除く）
+        const otherCareJobs = allUniqueJobs.filter(job => {
+          const isFromFixed = fixedCareJobs.some(fj => fj.id === job.id)
+          const isCareJob = job.title === '介護スタッフ' || job.position === '介護スタッフ'
+          return !isFromFixed && isCareJob
+        })
+        
+        console.log('Fixed care jobs (working):', fixedCareJobs.map(j => j.id))
+        console.log('Other care jobs (dummy):', otherCareJobs.map(j => j.id))
+        
+        // fixedの介護スタッフを最初に、その後に他の介護スタッフを配置
+        return [...fixedCareJobs, ...otherCareJobs]
+      })()
+    : allUniqueJobs
+  
+  console.log('Final uniqueJobs count:', uniqueJobs.length, 'hasSearched:', hasSearched, 'jobType:', filters.jobType)
+  
+  // 住まいの取得（仕事が選択されている場合はその仕事に対応する住まいのみ）
+  const uniqueHouses = selectedJob && isSelecting
+    ? pairs
+        .filter(p => p.job.id === selectedJob.id)
+        .map(p => p.house)
+        .filter((house, index, self) => 
+          index === self.findIndex(h => h.id === house.id)
+        )
+    : pairs
+        .map(p => p.house)
+        .filter((house, index, self) => 
+          index === self.findIndex(h => h.id === house.id)
+        )
 
   useEffect(() => {
     const tab = searchParams.get('tab') as TabType
@@ -53,9 +91,23 @@ function SearchContent() {
     }
   }, [searchParams])
 
+  // 仕事が選択された時に住まいタブに自動遷移
+  useEffect(() => {
+    if (selectedJob && isSelecting && activeTab === 'job') {
+      setActiveTab('home')
+      router.push('/search?tab=home')
+    }
+  }, [selectedJob, isSelecting, activeTab, router])
+
   const handleTabChange = (tab: TabType) => {
     setActiveTab(tab)
     router.push(`/search?tab=${tab}`)
+  }
+
+  const handleSearch = () => {
+    console.log('Search clicked, filters:', filters)
+    console.log('All jobs:', allUniqueJobs.map(j => ({ id: j.id, title: j.title, position: j.position })))
+    setHasSearched(true)
   }
 
   const tabs = [
@@ -166,7 +218,12 @@ function SearchContent() {
                     </SelectContent>
                   </Select>
                   
-                  <Button variant="outline" className="btn-primary" suppressHydrationWarning>
+                  <Button 
+                    variant="outline" 
+                    className="btn-primary" 
+                    suppressHydrationWarning
+                    onClick={handleSearch}
+                  >
                     <Search className="w-4 h-4 mr-2" />
                     検索
                   </Button>
