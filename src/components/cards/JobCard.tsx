@@ -34,7 +34,7 @@ export default function JobCard({ job }: JobCardProps) {
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-sm sm:text-base text-white mb-1 line-clamp-2">{job.title}</h3>
+              <h3 className="font-semibold text-sm sm:text-base text-white mb-1 line-clamp-2">{job.position}</h3>
               <p className="text-neutral-400 text-xs sm:text-sm line-clamp-1">{job.employer}</p>
             </div>
             <div className="text-right flex-shrink-0 ml-2">

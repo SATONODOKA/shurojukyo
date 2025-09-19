@@ -32,12 +32,13 @@ function SearchContent() {
   })
   const pairs = useAppStore(s => s.pairs)
   
-  // ユニークな仕事と住居を取得
+  // デモ用：介護スタッフの仕事のみを表示
   const uniqueJobs = pairs
     .map(p => p.job)
     .filter((job, index, self) => 
       index === self.findIndex(j => j.id === job.id)
     )
+    .filter(job => job.position === '介護スタッフ')
   
   const uniqueHouses = pairs
     .map(p => p.house)

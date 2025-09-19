@@ -2,11 +2,15 @@ import { z } from 'zod'
 
 export const JobSchema = z.object({
   id: z.string(),
-  title: z.string(),
+  title: z.string().optional(),
+  position: z.string().optional(),
   employer: z.string(),
   wage: z.string(),          // "¥1,250/hour" など
   location: z.string(),
   type: z.string(),          // "Full-time" 等
+  description: z.string().optional(),
+  requirements: z.array(z.string()).optional(),
+  benefits: z.array(z.string()).optional(),
 })
 
 export const HouseSchema = z.object({
@@ -61,4 +65,5 @@ export const UserProfileSchema = z.object({
 export type Job = z.infer<typeof JobSchema>
 export type House = z.infer<typeof HouseSchema>
 export type Pair = z.infer<typeof PairSchema>
+export type JobHousePair = Pair
 export type UserProfile = z.infer<typeof UserProfileSchema>

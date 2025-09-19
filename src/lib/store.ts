@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Pair, UserProfile, Job, House } from './types'
-import { fixedPairs } from './fixed-data'
+import { fixedPairs, jobHousePairs } from './fixed-data'
 
 export type JourneyStage = 'individual' | 'pair'
 
@@ -50,7 +50,7 @@ type State = {
 export const useAppStore = create<State>()(
   persist(
     (set, get) => ({
-  pairs: fixedPairs,
+  pairs: [...fixedPairs, ...jobHousePairs],
   savedIds: new Set<string>(),
   journeyStage: 'individual',
   threads: [],

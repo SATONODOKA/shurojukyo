@@ -1,4 +1,4 @@
-import type { Pair } from './types'
+import type { Pair, Job, JobHousePair } from './types'
 import { unsplashFixed } from './photos'
 
 export const fixedPairs: Pair[] = [
@@ -457,5 +457,45 @@ export const fixedPairs: Pair[] = [
       photo: unsplashFixed('house-24'),
       tags: ["駅近", "家具付き"],
     },
+  },
+]
+
+const houses = fixedPairs.map(p => p.house)
+
+export const jobs: Job[] = [
+  {
+    id: 'job-1',
+    employer: '高齢者福祉施設',
+    position: '介護スタッフ',
+    wage: '¥1,250/hour',
+    location: '愛知県・名古屋市',
+    type: 'Full-time',
+    description: '高齢者の日常生活支援と身体介護を行います。',
+    requirements: ['介護初任者研修修了', '日本語N3以上', 'やる気のある方'],
+    benefits: ['社会保険完備', '昇給あり', '研修制度充実'],
+  },
+  {
+    id: 'job-2', 
+    employer: '介護福祉センター',
+    position: '介護スタッフ',
+    wage: '¥1,320/hour',
+    location: '神奈川県・川崎市',
+    type: 'Full-time',
+    description: '利用者様の生活支援と介護業務全般を担当していただきます。',
+    requirements: ['介護経験者優遇', '日本語N2以上', 'チームワークを大切にできる方'],
+    benefits: ['交通費支給', '資格取得支援', '正社員登用あり'],
+  },
+]
+
+export const jobHousePairs: JobHousePair[] = [
+  {
+    id: 'pair-25',
+    job: jobs[0],
+    house: houses[0], // 名古屋近郊用
+  },
+  {
+    id: 'pair-26', 
+    job: jobs[1],
+    house: houses[1], // 神奈川近郊用
   },
 ]
