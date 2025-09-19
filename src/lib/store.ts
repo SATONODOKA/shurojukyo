@@ -186,7 +186,7 @@ export const useAppStore = create<State>()(
       // 両方選択済みの場合は即座に遷移（状態更新前）
       const { pairs, resetSelection } = currentState
       const matchingPair = pairs.find(p => 
-        p.job.id === job.id && p.house.id === currentState.selectedHouse.id
+        p.job.id === job.id && p.house.id === currentState.selectedHouse!.id
       )
       
       if (matchingPair) {
@@ -206,7 +206,7 @@ export const useAppStore = create<State>()(
       // 両方選択済みの場合は即座に遷移（状態更新前）
       const { pairs, resetSelection } = currentState
       const matchingPair = pairs.find(p => 
-        p.job.id === currentState.selectedJob.id && p.house.id === house.id
+        p.job.id === currentState.selectedJob!.id && p.house.id === house.id
       )
       
       if (matchingPair) {

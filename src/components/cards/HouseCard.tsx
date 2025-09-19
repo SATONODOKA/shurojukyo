@@ -13,7 +13,7 @@ interface HouseCardProps {
 
 export default function HouseCard({ house }: HouseCardProps) {
   const router = useRouter()
-  const { isSelecting, selectedJob, selectHouse } = useAppStore()
+  const { isSelecting, selectHouse } = useAppStore()
 
   const handleClick = () => {
     if (isSelecting) {

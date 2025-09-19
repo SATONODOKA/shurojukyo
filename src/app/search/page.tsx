@@ -33,7 +33,7 @@ function SearchContent() {
   })
   const [hasSearched, setHasSearched] = useState(false)
   const pairs = useAppStore(s => s.pairs)
-  const { isSelecting, selectedJob, selectedHouse, startSelection, resetSelection } = useAppStore()
+  const { isSelecting, selectedJob, selectedHouse } = useAppStore()
   
   // 全ての仕事を取得
   const allUniqueJobs = pairs

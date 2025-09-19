@@ -12,7 +12,7 @@ interface JobCardProps {
 
 export default function JobCard({ job }: JobCardProps) {
   const router = useRouter()
-  const { isSelecting, selectedHouse, selectJob } = useAppStore()
+  const { isSelecting, selectJob } = useAppStore()
 
   const handleClick = () => {
     if (isSelecting) {
